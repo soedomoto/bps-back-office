@@ -1,0 +1,258 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPS_Temp_Table_RPA_Report_Header
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPS_Temp_Table_RPA_Report_Header
+      TableType           #InMemory
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{8C33BC45-AD59-4B2D-878B-895E096D3A05}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #kd_es_1
+        STRING
+        PROPERTIES
+          Name                #kd_es_1
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{5976E8E0-139E-4B22-B548-C9EACADC610C}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_es_2
+        STRING
+        PROPERTIES
+          Name                #kd_es_2
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{CF3201D6-2CAD-4F22-AF83-F5FCEEA5177C}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_es_3
+        STRING
+        PROPERTIES
+          Name                #kd_es_3
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{F0A2965F-E442-46AD-8993-7AE9708F1905}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_kegiatan
+        STRING
+        PROPERTIES
+          Name                #kd_kegiatan
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{EB711CC3-FA56-43A3-9806-A340BD4483BD}
+          ExtendedDataType    #KdKegiatan
+          StringSize          #4
+        ENDPROPERTIES
+        
+      FIELD #kd_program
+        STRING
+        PROPERTIES
+          Name                #kd_program
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{C63086CD-3BFD-478C-AFDD-6EC9A2ECB77B}
+          ExtendedDataType    #KdProgramDJA
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #nip_pejabat_es_1
+        STRING
+        PROPERTIES
+          Name                #nip_pejabat_es_1
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{509EAC04-02FC-43EB-9C49-0E965C9B8566}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nip_pejabat_es_2
+        STRING
+        PROPERTIES
+          Name                #nip_pejabat_es_2
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{3EA7CF10-6382-481B-8BD5-7841480B92ED}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nip_pejabat_es_3
+        STRING
+        PROPERTIES
+          Name                #nip_pejabat_es_3
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{3538C91F-3723-4F2B-BC8B-0AE9771B3CEA}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_bln_rpa_1
+        STRING
+        PROPERTIES
+          Name                #nm_bln_rpa_1
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{582BE651-198B-48B6-833B-0B66E061E5A1}
+        ENDPROPERTIES
+        
+      FIELD #nm_bln_rpa_2
+        STRING
+        PROPERTIES
+          Name                #nm_bln_rpa_2
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{6B0D7F73-3B39-47EE-90A0-148BD6534898}
+        ENDPROPERTIES
+        
+      FIELD #nm_bln_rpa_3
+        STRING
+        PROPERTIES
+          Name                #nm_bln_rpa_3
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{2DFE5B50-EF4B-4C08-91C8-D757D40FE036}
+        ENDPROPERTIES
+        
+      FIELD #nm_es_1
+        STRING
+        PROPERTIES
+          Name                #nm_es_1
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{717B1B52-583C-4F5D-8794-97AF8AA302EE}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_es_2
+        STRING
+        PROPERTIES
+          Name                #nm_es_2
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{C82D6AA5-45D0-46BC-AC3B-3F1FF9CDFFF4}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_es_3
+        STRING
+        PROPERTIES
+          Name                #nm_es_3
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{38C457D1-CD35-42D7-BE09-B5215DDEA16F}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_kegiatan
+        STRING
+        PROPERTIES
+          Name                #nm_kegiatan
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{10596166-A66D-4FC9-8521-C7DFF9C3DD99}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_pejabat_es_1
+        STRING
+        PROPERTIES
+          Name                #nm_pejabat_es_1
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{7F82627E-6483-4AB2-ACE5-86226FB1C2C7}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_pejabat_es_2
+        STRING
+        PROPERTIES
+          Name                #nm_pejabat_es_2
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{1912E5F4-DCFA-4745-BF06-319125FEC31E}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_pejabat_es_3
+        STRING
+        PROPERTIES
+          Name                #nm_pejabat_es_3
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{7C0E4808-77B3-4254-A4E7-B332109B506D}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #nm_program
+        STRING
+        PROPERTIES
+          Name                #nm_program
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{920BA9FE-E09A-468B-B286-AF6C408A15D4}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #tahun
+        INT
+        PROPERTIES
+          Name                #tahun
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{AEFB737B-C603-44B3-B4D2-D204A9E4C55A}
+          ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+      FIELD #tanggal_surat
+        STRING
+        PROPERTIES
+          Name                #tanggal_surat
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{12BE2ADB-0F3C-4A5F-A311-252B72AA5FE8}
+        ENDPROPERTIES
+        
+      FIELD #triwulan
+        INT
+        PROPERTIES
+          Name                #triwulan
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{C38CD3A3-2968-42D8-BFA2-C92FE6AABA69}
+        ENDPROPERTIES
+        
+      FIELD #triwulan_romawi
+        STRING
+        PROPERTIES
+          Name                #triwulan_romawi
+          Table               #BPS_Temp_Table_RPA_Report_Header
+          Origin              #{7642077C-FFCA-4EB9-894C-E41D3820F9BB}
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

@@ -1,0 +1,313 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: FRM
+
+; 
+; --------------------------------------------------------------------------------
+FRMVERSION 12
+
+FORM #BPS_Form_Add_RPA
+  PROPERTIES
+    Name                #BPS_Form_Add_RPA
+    Origin              #{A67A29B9-8510-4DD7-A280-E5DB13522C28}
+  ENDPROPERTIES
+  
+  METHODS
+    SOURCE #classDeclaration
+      #public class FormRun extends ObjectRun
+      #{
+      #    BPSEntriPembiayaanPusat table_pok;
+      #    BPS_Table_RPA           table_rpa, table_sum_rpa;
+      #    DictEnum                enum_month;
+      #    boolean                 is_saved;
+      #}
+    ENDSOURCE
+    SOURCE #init
+      #public void init()
+      #{
+      #    int                     m = 1;
+      #    int                     n = 1;
+      #    boolean                 month_exists = false;
+      #    array                   available_months = new array(types::Integer);
+      #    QueryBuildDataSource    qb_ds;
+      #    Query                   query;
+      #    QueryRun                run;
+      #    BPS_Table_RPA           rec_rpa;
+      #
+      #    super();
+      #
+      #    table_pok = element.args().record();
+      #    enum_month = new DictEnum(enumNum(BPS_Enum_Month));
+      #
+      #    query = new Query();
+      #    qb_ds = query.addDataSource(tableNum(BPS_Table_RPA));
+      #    qb_ds.addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(table_pok.RecId));
+      #    qb_ds.addRange(fieldNum(BPS_Table_RPA, Tahun)).value(int2str(table_pok.Tahun));
+      #    qb_ds.addSortField(fieldNum(BPS_Table_RPA, Bulan));
+      #    run = new QueryRun(query);
+      #    while (run.next()) {
+      #        rec_rpa = run.GetNo(1);
+      #        if (rec_rpa.RevisedByRecId == 0) {
+      #            month_exists = false;
+      #            for(n=1; n<=available_months.lastIndex(); n++) {
+      #                if (available_months.value(n) == rec_rpa.Bulan) {
+      #                    month_exists = true;
+      #                    break;
+      #                }
+      #            }
+      #
+      #            if (! month_exists) {
+      #                available_months.value(m, rec_rpa.Bulan);
+      #                m = m+1;
+      #            }
+      #        }
+      #    }
+      #
+      #    CB_Month.clear();
+      #    for (m=0; m<enum_month.values(); m++) {
+      #        month_exists = false;
+      #        for(n=1; n<=available_months.lastIndex(); n++) {
+      #            if (available_months.value(n) == enum_month.index2Value(m)) {
+      #                month_exists = true;
+      #                break;
+      #            }
+      #        }
+      #
+      #        if (! month_exists) {
+      #            CB_Month.add(enum_month.index2Label(m));
+      #        }
+      #    }
+      #    CB_Month.update();
+      #}
+    ENDSOURCE
+    SOURCE #save
+      #public void save()
+      #{
+      #    real rpa_after = 0;
+      #    int m;
+      #    for (m=0; m<enum_month.values(); m++) {
+      #        if (CB_Month.valueStr() == enum_month.index2Label(m)) {
+      #            select sum(RPA) from table_sum_rpa where
+      #                table_sum_rpa.RevisedByRecId == 0 &&
+      #                table_sum_rpa.Tahun == table_pok.Tahun &&
+      #                table_sum_rpa.EntriPembiayaanPusatRecId == table_pok.RecId &&
+      #                table_sum_rpa.Bulan != m+1;
+      #
+      #            rpa_after = table_sum_rpa.RPA + Txt_RPA_Amount.realValue();
+      #            if (rpa_after > table_pok.PaguSisa) {
+      #                Box::stop("Total RPA Rp. " + num2str(rpa_after, 0, 2, 2, 1) +
+      #                " lebih besar dari jumlah pagu sisa Rp. " + num2str(table_pok.PaguSisa, 0, 2, 2, 1));
+      #                return;
+      #            }
+      #
+      #            BPS_Table_RPA_ds.create();
+      #            BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
+      #            BPS_Table_RPA.Bulan = m+1;
+      #            BPS_Table_RPA.EntriPembiayaanPusatRecId = table_pok.RecId;
+      #            BPS_Table_RPA.RevisionNo = 0;
+      #            BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
+      #            BPS_Table_RPA.Tahun = 2016;
+      #            BPS_Table_RPA.insert();
+      #            BPS_Table_RPA_ds.reread();
+      #            BPS_Table_RPA_ds.refresh();
+      #
+      #            Box::info("RPA bulan " + CB_Month.valueStr() + " berhasil disimpan.");
+      #
+      #            break;
+      #        }
+      #    }
+      #}
+    ENDSOURCE
+  ENDMETHODS
+  OBJECTBANK
+    PROPERTIES
+    ENDPROPERTIES
+    
+    DATASOURCE
+      OBJECTPOOL
+        PROPERTIES
+          Name                #BPS_Table_RPA
+          Table               #BPS_Table_RPA
+        ENDPROPERTIES
+        
+        FIELDLIST
+        ENDFIELDLIST
+      ENDOBJECTPOOL
+      METHODS
+      ENDMETHODS
+    ENDDATASOURCE
+  ENDOBJECTBANK
+  
+  REFERENCEDATASOURCES
+  ENDREFERENCEDATASOURCES
+  
+  JOINS
+  ENDJOINS
+  
+  PARTREFERENCES
+  ENDPARTREFERENCES
+  
+  DESIGN
+    PROPERTIES
+    ENDPROPERTIES
+    
+    CONTAINER
+      CONTROL GROUP
+        PROPERTIES
+          Name                #Group
+          Width               #Column width
+          ElementPosition     #1431655764
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #Group1
+          Width               #Column width
+          ElementPosition     #715827882
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMBOBOX
+        PROPERTIES
+          Name                #CB_Month
+          AutoDeclaration     #Yes
+          Width               #Column width
+          ElementPosition     #1073741822
+          HierarchyParent     #Group1
+          Label               #Bulan
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #Btn_Save
+          Left                #Auto (right)
+          ElementPosition     #1431655764
+          HierarchyParent     #Group
+          Text                #Simpan
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    element.save();
+            #    is_saved = true;
+            #
+            #    element.close();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #Txt_RPA_Amount
+          AutoDeclaration     #Yes
+          Width               #Column width
+          ElementPosition     #1610612733
+          HierarchyParent     #Group1
+          Label               #Jumlah RPA Rp.
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+    ENDCONTAINER
+    
+  ENDDESIGN
+  
+  PERMISSIONS #Permissions
+    PROPERTIES
+    ENDPROPERTIES
+    
+    PERMISSIONSET #Read
+      PROPERTIES
+      ENDPROPERTIES
+      
+      FORM #Controls
+      ENDFORM
+      
+    TABLES #Tables
+    ENDTABLES
+    
+  SERVERMETHODS #Server Methods
+  ENDSERVERMETHODS
+  
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Update
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Create
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Delete
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+ENDPERMISSIONS
+
+ENDFORM
+
+
+***Element: END

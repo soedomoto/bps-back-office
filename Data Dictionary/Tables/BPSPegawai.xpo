@@ -1,0 +1,431 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPSPegawai
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPSPegawai
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{9E66077D-2BB1-4AE9-B617-B0099DD63AC3}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #fung_flagstjab
+        STRING
+        PROPERTIES
+          Name                #fung_flagstjab
+          Table               #BPSPegawai
+          Origin              #{A8AF89DE-0592-49CD-BA66-E79681CD5888}
+          ExtendedDataType    #fung_flagstjab
+        ENDPROPERTIES
+        
+      FIELD #fung_kdstjab
+        STRING
+        PROPERTIES
+          Name                #fung_kdstjab
+          Table               #BPSPegawai
+          Origin              #{40D37CA0-C90F-45AA-AA1D-6B18A19A1B12}
+          ExtendedDataType    #fung_kdstjab
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #fung_kode_jabatan_to_jenjang
+        STRING
+        PROPERTIES
+          Name                #fung_kode_jabatan_to_jenjang
+          Table               #BPSPegawai
+          Origin              #{499EC016-675A-47CB-B4BE-CDB37FEC35E1}
+          ExtendedDataType    #fung_kode_jabatan_to_jenjang
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #fung_status_jabatan
+        STRING
+        PROPERTIES
+          Name                #fung_status_jabatan
+          Table               #BPSPegawai
+          Origin              #{3425A1AC-840F-4413-9B68-C640D323E89A}
+          ExtendedDataType    #fung_status_jabatan
+          StringSize          #40
+        ENDPROPERTIES
+        
+      FIELD #jab_flagstjab
+        STRING
+        PROPERTIES
+          Name                #jab_flagstjab
+          Table               #BPSPegawai
+          Origin              #{ECE318AB-4018-4CE3-BC64-4E374FA30F74}
+          ExtendedDataType    #jab_flagstjab
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #jab_kdstjab
+        STRING
+        PROPERTIES
+          Name                #jab_kdstjab
+          Table               #BPSPegawai
+          Origin              #{5310CD51-2350-442F-9061-BF301376F9EB}
+          ExtendedDataType    #jab_kdstjab
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #jab_kdstkerja
+        STRING
+        PROPERTIES
+          Name                #jab_kdstkerja
+          Table               #BPSPegawai
+          Origin              #{DBF6098D-AF8E-490C-975B-CE00E7D73595}
+        ENDPROPERTIES
+        
+      FIELD #kdesl
+        STRING
+        PROPERTIES
+          Name                #kdesl
+          Table               #BPSPegawai
+          Origin              #{E52337B9-CACE-48E3-9435-4A42B9E9F0A5}
+          ExtendedDataType    #kdesl
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #kdgol
+        STRING
+        PROPERTIES
+          Name                #kdgol
+          Table               #BPSPegawai
+          Origin              #{C84E176C-C1E4-4010-9972-FC05E7F1835C}
+          ExtendedDataType    #kdgol
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #KdOrg
+        STRING
+        PROPERTIES
+          Name                #KdOrg
+          Table               #BPSPegawai
+          Origin              #{1C07E0A3-710B-4C9C-B46E-2B954AE0BE4C}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #Nama
+        STRING
+        PROPERTIES
+          Name                #Nama
+          Table               #BPSPegawai
+          Origin              #{5563DB04-8383-4710-8353-E1906CA3DD37}
+          ExtendedDataType    #Nama
+          StringSize          #250
+        ENDPROPERTIES
+        
+      FIELD #NIPBaru
+        STRING
+        PROPERTIES
+          Name                #NIPBaru
+          Table               #BPSPegawai
+          Origin              #{15C37A8A-CC0F-4C3A-9202-33B4D3986773}
+          ExtendedDataType    #NIPBaru
+          StringSize          #18
+        ENDPROPERTIES
+        
+      FIELD #NIPBPS
+        STRING
+        PROPERTIES
+          Name                #NIPBPS
+          Table               #BPSPegawai
+          Origin              #{A25AB8AD-7E7A-4E67-A36D-0FBDE9434855}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #NPWP
+        STRING
+        PROPERTIES
+          Name                #NPWP
+          Table               #BPSPegawai
+          Origin              #{4E74AE43-4153-48AA-9AC0-D56E86EA87A9}
+          ExtendedDataType    #NPWP
+          StringSize          #20
+        ENDPROPERTIES
+        
+      FIELD #stp_kdstpeg
+        STRING
+        PROPERTIES
+          Name                #stp_kdstpeg
+          Table               #BPSPegawai
+          Origin              #{1A2E3DF4-4C5F-4075-9C39-4A1ECCDED445}
+          ExtendedDataType    #stp_kdstpeg
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #WilKab
+        STRING
+        PROPERTIES
+          Name                #WilKab
+          Table               #BPSPegawai
+          Origin              #{B3E75CE4-8A69-463C-AB14-F28F31C2BB7D}
+          ExtendedDataType    #kdkab
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #WilProp
+        STRING
+        PROPERTIES
+          Name                #WilProp
+          Table               #BPSPegawai
+          Origin              #{E6C30C1F-E3BD-4B57-B87E-E4A322CCF19C}
+          ExtendedDataType    #kdprop
+          StringSize          #2
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+      #KeyPegawaiTMP
+      PROPERTIES
+        Name                #KeyPegawaiTMP
+        AllowDuplicates     #No
+        Origin              #{00F45BB7-1E7C-4046-9FA4-80920E0A346E}
+      ENDPROPERTIES
+      
+      INDEXFIELDS
+        #NIPBPS
+      ENDINDEXFIELDS
+      
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+      SOURCE #getNamaOrgCurrent
+        #display Description getNamaOrgCurrent()
+        #{
+        #    Description NamaOrg;
+        #    BPSKmsOrg BPSKmsOrg;
+        #    BPSFlagOrg BPSFlagOrg;
+        #
+        #    select firstOnly BPSFlagOrg order by BPSFlagOrg.tanggalSKOrg desc  ;
+        #
+        #    select BPSKmsOrg where BPSKmsOrg.KdOrg==substr(this.KdOrg,0,3)+"00" && BPSKmsOrg.FlagOrg==BPSFlagOrg.FlagOrg;
+        #    NamaOrg = BPSKmsOrg.NamaOrg;
+        #    return NamaOrg;
+        #}
+      ENDSOURCE
+      SOURCE #populateByNIPBaru
+        #public void populateByNIPBaru(NIPBaru NIPBaru)
+        #{
+        #    LoginProperty loginProperty;
+        #    OdbcConnection odbcConnection;
+        #    Statement statement;
+        #    ResultSet resultSet;
+        #    str sql, criteria;
+        #    SqlStatementExecutePermission perm;
+        #    ;
+        #    loginProperty = new LoginProperty();
+        #    loginProperty.setServer("10.0.0.46");
+        #    loginProperty.setDatabase("SIMPEGNEW");
+        #
+        #
+        #    //Create a connection to external database.
+        #    odbcConnection = new OdbcConnection(loginProperty);
+        #
+        #    //info(myConnectionString);
+        #
+        #    if (odbcConnection)
+        #    {
+        #
+        #         sql = " SELECT niplama,nipbaru,  CAST("
+        #              +" CASE"
+        #              +"      WHEN gelardepan IS NULL"
+        #              +"         THEN ''"
+        #              +"    WHEN RTRIM(gelardepan) = '' "
+        #              +"       THEN '' "
+        #              +"    ELSE RTRIM(gelardepan)+' ' "
+        #              +" END AS varchar) + LTRIM(RTRIM(nama)) + CAST("
+        #              +" CASE "
+        #              +"     WHEN gelarbelakang IS NULL"
+        #              +"         THEN ''"
+        #              +"    WHEN LTRIM(gelarbelakang) = '' "
+        #              +"       THEN '' "
+        #              +"    ELSE ' '+LTRIM(gelarbelakang) "
+        #              +" END AS varchar) as nama,"
+        #              +" jab_kdorg   as kdorg,"
+        #              +" jab_kdesl   as kdesl,"
+        #              +" gol_kdgol   as kdgol,"
+        #              +" jab_kdprop  as WilProp,"
+        #              +" jab_kdkab   as WilKab,"
+        #              +" stp_kdstpeg as stp_kdstpeg,"
+        #              +" fung_status_jabatan as fung_status_jabatan,"
+        #              +" fung_flagstjab as fung_flagstjab,"
+        #              +" fung_kdstjab   as fung_kdstjab,"
+        #              +" fung_kode_jabatan_to_jenjang as fung_kode_jabatan_to_jenjang,"
+        #              +" jab_flagstjab  as jab_flagstjab,"
+        #              +" jab_kdstjab    as jab_kdstjab,"
+        #              +" jab_kdstkerja  as jab_kdstkerja"
+        #              +" FROM ViewKamusPegawai_uAX "
+        #              +" WHERE nipbaru = '"+NIPBaru+"'"
+        #              +" ORDER BY jab_kdorg";
+        #
+        #        //Assert permission for executing the sql string.
+        #        //perm = new SqlStatementExecutePermission(sql);
+        #        //perm.assert();
+        #
+        #        //Prepare the sql statement.
+        #        statement = odbcConnection.createStatement();
+        #        resultSet = statement.executeQuery(sql);
+        #        CodeAccessPermission::revertAssert();
+        #        //Cause the sql statement to run,
+        #        //then loop through each row in the result.
+        #        while (resultSet.next())
+        #        {
+        #            //Always get fields in numerical order, such as 1 then 2 the 3
+        #            //info (resultSet.getString(1));
+        #            this.NIPBPS                       = resultSet.getString(1);
+        #            this.NIPBaru                      = resultSet.getString(2);
+        #            this.Nama                         = resultSet.getString(3);
+        #            this.KdOrg                        = resultSet.getString(4);
+        #            this.kdesl                        = resultSet.getString(5);
+        #            this.kdgol                        = resultSet.getString(6);
+        #            this.WilProp                      = resultSet.getString(7);
+        #            this.WilKab                       = resultSet.getString(8);
+        #            this.stp_kdstpeg                  = resultSet.getString(9);
+        #            this.fung_status_jabatan          = resultSet.getString(10);
+        #            this.fung_flagstjab               = resultSet.getString(11);
+        #            this.fung_kdstjab                 = resultSet.getString(12);
+        #            this.fung_kode_jabatan_to_jenjang = resultSet.getString(13);
+        #            this.jab_flagstjab                = resultSet.getString(14);
+        #            this.jab_kdstjab                  = resultSet.getString(15);
+        #            this.jab_kdstkerja                = resultSet.getString(16);
+        #            this.insert();
+        #        }
+        #        //Close the connection.
+        #        resultSet.close();
+        #        statement.close();
+        #    }
+        #    else
+        #    {
+        #        error("Failed to log on to the database through ODBC.");
+        #
+        #    }
+        #}
+      ENDSOURCE
+      SOURCE #populateRekapAbsenUMakan
+        #public void populateRekapAbsenUMakan()
+        #{
+        #    LoginProperty loginProperty;
+        #    OdbcConnection odbcConnection;
+        #    Statement statement;
+        #    ResultSet resultSet;
+        #    str sql, criteria,kdorg;
+        #    SqlStatementExecutePermission perm;
+        #    ;
+        #    loginProperty = new LoginProperty();
+        #    loginProperty.setServer("10.0.0.46");
+        #    //loginProperty.setDSN("SIMPEGUJICOBA");
+        #    loginProperty.setDatabase("SIMPEGNEW");
+        #
+        #
+        #    //Create a connection to external database.
+        #    odbcConnection = new OdbcConnection(loginProperty);
+        #
+        #    //info(myConnectionString);
+        #
+        #    if (odbcConnection)
+        #    {
+        #
+        #        sql = " SELECT niplama,nipbaru,  CAST("
+        #              +" CASE"
+        #              +"      WHEN gelardepan IS NULL"
+        #              +"         THEN ''"
+        #              +"    WHEN RTRIM(gelardepan) = '' "
+        #              +"       THEN '' "
+        #              +"    ELSE RTRIM(gelardepan)+' ' "
+        #              +" END AS varchar) + LTRIM(RTRIM(nama)) + CAST("
+        #              +" CASE "
+        #              +"     WHEN gelarbelakang IS NULL"
+        #              +"         THEN ''"
+        #              +"    WHEN LTRIM(gelarbelakang) = '' "
+        #              +"       THEN '' "
+        #              +"    ELSE ' '+LTRIM(gelarbelakang) "
+        #              +" END AS varchar) as nama,"
+        #              +" jab_kdorg   as kdorg,"
+        #              +" jab_kdesl   as kdesl,"
+        #              +" gol_kdgol   as kdgol,"
+        #              +" jab_kdprop  as WilProp,"
+        #              +" jab_kdkab   as WilKab,"
+        #              +" stp_kdstpeg as stp_kdstpeg,"
+        #              +" fung_status_jabatan as fung_status_jabatan,"
+        #              +" fung_flagstjab as fung_flagstjab,"
+        #              +" fung_kdstjab   as fung_kdstjab,"
+        #              +" fung_kode_jabatan_to_jenjang as fung_kode_jabatan_to_jenjang,"
+        #              +" jab_flagstjab  as jab_flagstjab,"
+        #              +" jab_kdstjab    as jab_kdstjab,"
+        #              +" jab_kdstkerja  as jab_kdstkerja"
+        #              +" FROM ViewKamusPegawai_uAX "
+        #              +" WHERE jab_kdorg NOT LIKE '0%' AND jab_kdorg NOT LIKE '235%' AND jab_kdorg NOT LIKE '236%' AND jab_kdorg NOT LIKE '237%'AND jab_kdorg NOT LIKE '26%' AND jab_kdorg NOT LIKE '27%' AND jab_kdorg NOT LIKE '273%'AND jab_kdorg NOT LIKE '9%'"
+        #              +" and substring(stp_kdstpeg,1,1) NOT IN( '9','3','2') AND stp_kdstpeg != '03'"
+        #              +" ORDER BY jab_kdorg";
+        #
+        #        //Assert permission for executing the sql string.
+        #        //perm = new SqlStatementExecutePermission(sql);
+        #        //perm.assert();
+        #
+        #        //Prepare the sql statement.
+        #        statement = odbcConnection.createStatement();
+        #        resultSet = statement.executeQuery(sql);
+        #        CodeAccessPermission::revertAssert();
+        #        //Cause the sql statement to run,
+        #        //then loop through each row in the result.
+        #        while (resultSet.next())
+        #        {
+        #            //Always get fields in numerical order, such as 1 then 2 the 3
+        #            //info (resultSet.getString(1));
+        #            this.NIPBPS                       = resultSet.getString(1);
+        #            this.NIPBaru                      = resultSet.getString(2);
+        #            this.Nama                         = resultSet.getString(3);
+        #            this.KdOrg                        = resultSet.getString(4);
+        #            this.kdesl                        = resultSet.getString(5);
+        #            this.kdgol                        = resultSet.getString(6);
+        #            this.WilProp                      = resultSet.getString(7);
+        #            this.WilKab                       = resultSet.getString(8);
+        #            this.stp_kdstpeg                  = resultSet.getString(9);
+        #            this.fung_status_jabatan          = resultSet.getString(10);
+        #            this.fung_flagstjab               = resultSet.getString(11);
+        #            this.fung_kdstjab                 = resultSet.getString(12);
+        #            this.fung_kode_jabatan_to_jenjang = resultSet.getString(13);
+        #            this.jab_flagstjab                = resultSet.getString(14);
+        #            this.jab_kdstjab                  = resultSet.getString(15);
+        #            this.jab_kdstkerja                = resultSet.getString(16);
+        #            this.insert();
+        #            //info (resultSet.getString(1));
+        #        }
+        #        //Close the connection.
+        #        resultSet.close();
+        #        statement.close();
+        #    }
+        #    else
+        #    {
+        #        error("Failed to log on to the database through ODBC.");
+        #
+        #    }
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

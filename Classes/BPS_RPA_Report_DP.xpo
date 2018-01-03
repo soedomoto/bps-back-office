@@ -1,0 +1,279 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; 
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #BPS_RPA_Report_DP
+    PROPERTIES
+      Name                #BPS_RPA_Report_DP
+      Extends             #SRSReportDataProviderBase
+      RunOn               #Server
+      Origin              #{94B81AF9-614F-4735-B300-1A9BBA388A77}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #[
+        #SRSReportParameterAttribute(classStr(BPS_RPA_Report_DC))
+        #]
+        #class BPS_RPA_Report_DP extends SRSReportDataProviderBase
+        #{
+        #    BPS_Enum_Month                      month;
+        #    int                                 month_1, month_2, month_3, triwulan;
+        #    date                                now;
+        #    str                                 month_name_1, month_name_2, month_name_3, roman_tw, now_ID;
+        #
+        #    BPSEntriPembiayaanPusat             pok, sel_pok, akun_pok;
+        #    BPS_Table_RPA                       rpa_1, rpa_2, rpa_3, rpa_cumm_before;
+        #
+        #    BPSKmsOrg                           sel_org;
+        #    KdOrg                               kd_es_1, kd_es_2, kd_es_3;
+        #    Description                         nm_es_1, nm_es_2, nm_es_3;
+        #    BPSPegawai                          pej_es_1, pej_es_2, pej_es_3;
+        #
+        #    BPSProgram                          sel_program;
+        #    BPSKegiatan                         sel_kegiatan;
+        #    BPSOutput                           sel_output;
+        #    BPSKomponen                         sel_komponen;
+        #    BPSAkun                             sel_akun;
+        #
+        #    BPS_RPA_Report_DC                   contract;
+        #    BPS_Temp_Table_RPA_Report           table_report;
+        #    BPS_Temp_Table_RPA_Report_Header    table_report_header;
+        #}
+      ENDSOURCE
+      SOURCE #get_table_report
+        #[SRSReportDataSetAttribute("table_report")]
+        #public BPS_Temp_Table_RPA_Report get_table_report()
+        #{
+        #    select * from table_report;
+        #    return table_report;
+        #}
+      ENDSOURCE
+      SOURCE #get_table_report_header
+        #[SRSReportDataSetAttribute("table_report_header")]
+        #public BPS_Temp_Table_RPA_Report_Header get_table_report_header()
+        #{
+        #    select * from table_report_header;
+        #    return table_report_header;
+        #}
+      ENDSOURCE
+      SOURCE #processReport
+        #public void processReport()
+        #{
+        #    contract = this.parmDataContract();
+        #    select sel_pok where sel_pok.RecId == contract.param_pok_ref_id();
+        #
+        #    now = today();
+        #    now_ID = date2str(now, 123, -1, -1, -1, -1, -1);
+        #    triwulan = contract.param_triwulan();
+        #
+        #    switch (triwulan) {
+        #        case 1:
+        #            roman_tw = "I";
+        #            month_1 = 1;
+        #            month_2 = 2;
+        #            month_3 = 3;
+        #            month_name_1 = "Januari";
+        #            month_name_2 = "Februari";
+        #            month_name_3 = "Maret";
+        #            break;
+        #        case 2:
+        #            roman_tw = "II";
+        #            month_1 = 4;
+        #            month_2 = 5;
+        #            month_3 = 6;
+        #            month_name_1 = "April";
+        #            month_name_2 = "Mei";
+        #            month_name_3 = "Juni";
+        #            break;
+        #        case 3:
+        #            roman_tw = "III";
+        #            month_1 = 7;
+        #            month_2 = 8;
+        #            month_3 = 9;
+        #            month_name_1 = "Juli";
+        #            month_name_2 = "Agustus";
+        #            month_name_3 = "September";
+        #            break;
+        #        case 4:
+        #            roman_tw = "IV";
+        #            month_1 = 10;
+        #            month_2 = 11;
+        #            month_3 = 12;
+        #            month_name_1 = "Oktober";
+        #            month_name_2 = "November";
+        #            month_name_3 = "Desember";
+        #            break;
+        #    }
+        #
+        #    ttsbegin;
+        #
+        #    // Header
+        #    kd_es_1 = "";
+        #    nm_es_1 = "";
+        #    kd_es_2 = "";
+        #    nm_es_2 = "";
+        #    kd_es_3 = "";
+        #    nm_es_3 = "";
+        #    table_report_header.clear();
+        #
+        #    select sel_org where sel_org.KdOrg == sel_pok.KdOrg;
+        #    switch (sel_org.Eselon) {
+        #        case 1:
+        #            kd_es_1 = sel_org.KdOrg;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #        case 2:
+        #            kd_es_2 = sel_org.KdOrg;
+        #            nm_es_2 = sel_org.NamaOrg;
+        #            kd_es_1 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_1;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #        case 3:
+        #            kd_es_3 = sel_org.KdOrg;
+        #            nm_es_3 = sel_org.NamaOrg;
+        #            kd_es_2 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_2;
+        #            nm_es_2 = sel_org.NamaOrg;
+        #            kd_es_1 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_1;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #    }
+        #
+        #    select sel_program where sel_program.KdProgramDJA == sel_pok.KdProgramDJA;
+        #    select sel_kegiatan where sel_kegiatan.KdKegiatan == sel_pok.KdKegiatan;
+        #    select pej_es_1 where pej_es_1.jab_kdstjab == "4" &&
+        #        !(pej_es_1.stp_kdstpeg like "9*") &&
+        #        pej_es_1.KdOrg == kd_es_1;
+        #    select pej_es_2 where pej_es_2.jab_kdstjab == "4" &&
+        #        !(pej_es_2.stp_kdstpeg like "9*") &&
+        #        pej_es_2.KdOrg == kd_es_2;
+        #    select pej_es_3 where pej_es_3.jab_kdstjab == "4" &&
+        #        !(pej_es_3.stp_kdstpeg like "9*") &&
+        #        pej_es_3.KdOrg == kd_es_3;
+        #
+        #    table_report_header.kd_es_1 = kd_es_1;
+        #    table_report_header.nm_es_1 = nm_es_1;
+        #    table_report_header.nm_pejabat_es_1 = pej_es_1.Nama;
+        #    table_report_header.nip_pejabat_es_1 = pej_es_1.NIPBaru;
+        #    table_report_header.kd_es_2 = kd_es_2;
+        #    table_report_header.nm_es_2 = nm_es_2;
+        #    table_report_header.nm_pejabat_es_2 = pej_es_2.Nama;
+        #    table_report_header.nip_pejabat_es_2 = pej_es_2.NIPBaru;
+        #    table_report_header.kd_es_3 = kd_es_3;
+        #    table_report_header.nm_es_3 = nm_es_3;
+        #    table_report_header.nm_pejabat_es_3 = pej_es_3.Nama;
+        #    table_report_header.nip_pejabat_es_3 = pej_es_3.NIPBaru;
+        #    table_report_header.kd_program = sel_pok.KdProgramDJA;
+        #    table_report_header.nm_program = sel_program.nmprogram;
+        #    table_report_header.kd_kegiatan = sel_pok.KdKegiatan;
+        #    table_report_header.nm_kegiatan = sel_kegiatan.NmKegiatan;
+        #    table_report_header.tahun = sel_pok.Tahun;
+        #    table_report_header.triwulan = triwulan;
+        #    table_report_header.triwulan_romawi = roman_tw;
+        #    table_report_header.nm_bln_rpa_1 = month_name_1;
+        #    table_report_header.nm_bln_rpa_2 = month_name_2;
+        #    table_report_header.nm_bln_rpa_3 = month_name_3;
+        #    table_report_header.tanggal_surat = now_ID;
+        #
+        #    table_report_header.insert();
+        #
+        #    // Body
+        #    table_report.clear();
+        #    while select sel_komponen where sel_komponen.KdProgramDJA == sel_pok.KdProgramDJA &&
+        #        sel_komponen.KdKegiatan == sel_pok.KdKegiatan &&
+        #        /*sel_komponen.KdOutput == sel_output.KdOutput &&*/
+        #        sel_komponen.KdOrg == sel_pok.KdOrg &&
+        #        sel_komponen.Tahun == sel_pok.Tahun {
+        #
+        #        table_report.kd_akun = sel_komponen.KdKomponen;
+        #        table_report.akun_detail = sel_komponen.NmKomponen;
+        #        table_report.pagu = 0;
+        #        table_report.volume = 0;
+        #        table_report.satuan = "";
+        #        table_report.nilai = 0;
+        #        table_report.rpa_1 = 0;
+        #        table_report.rpa_2 = 0;
+        #        table_report.rpa_3 = 0;
+        #
+        #        table_report.insert();
+        #
+        #        while select KdProgramDJA, KdKegiatan, KdKomponen, kdAkun, count(NOUrutItem) from akun_pok
+        #            group by KdProgramDJA, KdKegiatan, KdKomponen, kdAkun
+        #            where akun_pok.KdProgramDJA == sel_pok.KdProgramDJA &&
+        #            akun_pok.KdKegiatan == sel_pok.KdKegiatan &&
+        #            akun_pok.KdKomponen == sel_komponen.KdKomponen &&
+        #            akun_pok.KdOrg == sel_pok.KdOrg &&
+        #            akun_pok.Tahun == sel_pok.Tahun {
+        #
+        #            select sel_akun where sel_akun.kdAkun == akun_pok.kdAkun;
+        #            table_report.kd_akun = "   " + akun_pok.kdAkun;
+        #            table_report.akun_detail = sel_akun.NmAkun;
+        #            table_report.pagu = 0;
+        #            table_report.last_rpa_cumm = 0;
+        #            table_report.volume = 0;
+        #            table_report.satuan = "";
+        #            table_report.nilai = 0;
+        #            table_report.rpa_1 = 0;
+        #            table_report.rpa_2 = 0;
+        #            table_report.rpa_3 = 0;
+        #
+        #            table_report.insert();
+        #
+        #            while select pok where pok.KdProgramDJA == sel_pok.KdProgramDJA &&
+        #                pok.KdKegiatan == sel_pok.KdKegiatan &&
+        #                /*pok.KdOutput == sel_output.KdOutput &&*/
+        #                pok.KdKomponen == sel_komponen.KdKomponen &&
+        #                pok.kdAkun == akun_pok.kdAkun &&
+        #                pok.KdOrg == sel_pok.KdOrg &&
+        #                pok.Tahun == sel_pok.Tahun {
+        #
+        #                select sum(RPA) from rpa_cumm_before where
+        #                    rpa_cumm_before.EntriPembiayaanPusatRecId == pok.RecId &&
+        #                    rpa_cumm_before.RevisedByRecId == 0 &&
+        #                    rpa_cumm_before.Tahun == sel_pok.Tahun &&
+        #                    // rpa_cumm_before.Bulan != null &&
+        #                    rpa_cumm_before.Bulan < month_1;
+        #                select rpa_1 where rpa_1.EntriPembiayaanPusatRecId == pok.RecId &&
+        #                    rpa_1.RevisedByRecId == 0 && rpa_1.Tahun == sel_pok.Tahun &&
+        #                    rpa_1.Bulan == month_1;
+        #                select rpa_2 where rpa_2.EntriPembiayaanPusatRecId == pok.RecId &&
+        #                    rpa_2.RevisedByRecId == 0 && rpa_2.Tahun == sel_pok.Tahun &&
+        #                    rpa_2.Bulan == month_2;
+        #                select rpa_3 where rpa_3.EntriPembiayaanPusatRecId == pok.RecId &&
+        #                    rpa_3.RevisedByRecId == 0 && rpa_3.Tahun == sel_pok.Tahun &&
+        #                    rpa_3.Bulan == month_3;
+        #
+        #                // table_report.tahun = pok.Tahun;
+        #                // table_report.triwulan = triwulan;
+        #                // table_report.romawi_triwulan = roman_tw;
+        #                table_report.kd_akun = "";
+        #                table_report.akun_detail = pok.DetailItem;
+        #                table_report.pagu = pok.PaguSisa;
+        #                table_report.last_rpa_cumm = rpa_cumm_before.RPA;
+        #                table_report.volume = pok.volume;
+        #                table_report.satuan = pok.KdSatuan;
+        #                table_report.nilai = 0;
+        #                table_report.rpa_1 = rpa_1.RPA;
+        #                table_report.rpa_2 = rpa_2.RPA;
+        #                table_report.rpa_3 = rpa_3.RPA;
+        #
+        #                table_report.insert();
+        #            }
+        #        }
+        #    }
+        #
+        #    ttsCommit;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END

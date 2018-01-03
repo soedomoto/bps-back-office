@@ -1,0 +1,106 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBE
+
+; 
+; --------------------------------------------------------------------------------
+  ENUMTYPEVERSION 1
+  
+  ENUMTYPE #BPS_Enum_Month
+    PROPERTIES
+      Name                #BPS_Enum_Month
+      UseEnumValue        #Yes
+      Origin              #{4DFCD566-65FE-4F43-AEBF-1C42ED1301DB}
+    ENDPROPERTIES
+    
+    TYPEELEMENTS
+      #Januari
+      PROPERTIES
+        Name                #Januari
+        Label               #Januari
+        EnumValue           #1
+      ENDPROPERTIES
+      
+      #Februari
+      PROPERTIES
+        Name                #Februari
+        Label               #Februari
+        EnumValue           #2
+      ENDPROPERTIES
+      
+      #Maret
+      PROPERTIES
+        Name                #Maret
+        Label               #Maret
+        EnumValue           #3
+      ENDPROPERTIES
+      
+      #April
+      PROPERTIES
+        Name                #April
+        Label               #April
+        EnumValue           #4
+      ENDPROPERTIES
+      
+      #Mei
+      PROPERTIES
+        Name                #Mei
+        Label               #Mei
+        EnumValue           #5
+      ENDPROPERTIES
+      
+      #Juni
+      PROPERTIES
+        Name                #Juni
+        Label               #Juni
+        EnumValue           #6
+      ENDPROPERTIES
+      
+      #Juli
+      PROPERTIES
+        Name                #Juli
+        Label               #Juli
+        EnumValue           #7
+      ENDPROPERTIES
+      
+      #Agustus
+      PROPERTIES
+        Name                #Agustus
+        Label               #Agustus
+        EnumValue           #8
+      ENDPROPERTIES
+      
+      #September
+      PROPERTIES
+        Name                #September
+        Label               #September
+        EnumValue           #9
+      ENDPROPERTIES
+      
+      #Oktober
+      PROPERTIES
+        Name                #Oktober
+        Label               #Oktober
+        EnumValue           #10
+      ENDPROPERTIES
+      
+      #November
+      PROPERTIES
+        Name                #November
+        Label               #November
+        EnumValue           #11
+      ENDPROPERTIES
+      
+      #Desember
+      PROPERTIES
+        Name                #Desember
+        Label               #Desember
+        EnumValue           #12
+      ENDPROPERTIES
+      
+    ENDTYPEELEMENTS
+  ENDENUMTYPE
+  
+
+***Element: END

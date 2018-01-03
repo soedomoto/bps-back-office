@@ -1,0 +1,762 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPSEntriPembiayaanPusat
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPSEntriPembiayaanPusat
+      Label               #Entri Pembiayaan BPS Pusat
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{E6C5C377-E052-49EF-B5A7-2B77094693B0}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #CaraHitung
+        INT
+        PROPERTIES
+          Name                #CaraHitung
+          Label               #Cara Hitung
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{ECCF797B-E918-41DE-B338-55C115866FC6}
+        ENDPROPERTIES
+        
+      FIELD #DetailItem
+        STRING
+        PROPERTIES
+          Name                #DetailItem
+          Label               #Detail Item
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{A18C9AF5-059C-4358-BC94-31A2F263A299}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #FlagKeterpaduan
+        ENUM
+        PROPERTIES
+          Name                #FlagKeterpaduan
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{8DA8A656-EBF7-4D94-9101-5DA36CCC87CA}
+          EnumType            #FlagKeterpaduan
+        ENDPROPERTIES
+        
+      FIELD #FlagOrg
+        INT
+        PROPERTIES
+          Name                #FlagOrg
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{E73CF66B-061D-4A24-9E83-52BCC8C2491C}
+          ExtendedDataType    #FlagOrg
+        ENDPROPERTIES
+        
+      FIELD #FlagTerpakai
+        ENUM
+        PROPERTIES
+          Name                #FlagTerpakai
+          Label               #Terpakai
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{946BBEA2-E9C9-4FAE-B4F1-A018F85AF91E}
+          EnumType            #YaTidak
+        ENDPROPERTIES
+        
+      FIELD #GroupPOK
+        STRING
+        PROPERTIES
+          Name                #GroupPOK
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{0B110517-A5DD-4EE5-B54C-38042301C380}
+          ExtendedDataType    #GroupPOK
+          StringSize          #50
+        ENDPROPERTIES
+        
+      FIELD #hargaSatuan
+        REAL
+        PROPERTIES
+          Name                #hargaSatuan
+          Label               #Harga Satuan
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{5C3B7F5E-7CE6-4AF4-BC98-9FD73DE35D46}
+        ENDPROPERTIES
+        
+      FIELD #header1
+        STRING
+        PROPERTIES
+          Name                #header1
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{8254158E-170A-418C-B06B-A2E47E766BFE}
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #header2
+        STRING
+        PROPERTIES
+          Name                #header2
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{EF16B8FB-AD4E-45C1-A2F9-3A63FD6F817C}
+          StringSize          #2
+        ENDPROPERTIES
+        
+      FIELD #jadwal
+        STRING
+        PROPERTIES
+          Name                #jadwal
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{DCBD25EF-E9C2-4811-B4C9-BF5056120CB0}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #kdAkun
+        STRING
+        PROPERTIES
+          Name                #kdAkun
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{E991AECB-25F1-4F6E-9958-A506163587D1}
+          ExtendedDataType    #kdAkun
+        ENDPROPERTIES
+        
+      FIELD #KdBeban
+        STRING
+        PROPERTIES
+          Name                #KdBeban
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7EBBC245-1C28-49FC-A136-1426F087DADF}
+          ExtendedDataType    #KdBeban
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #KdCTarik
+        STRING
+        PROPERTIES
+          Name                #KdCTarik
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{35E2FF75-19FE-4431-A57B-A3FB8E6017C0}
+          ExtendedDataType    #KdCTarik
+        ENDPROPERTIES
+        
+      FIELD #kdheader
+        STRING
+        PROPERTIES
+          Name                #kdheader
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{45E29EAE-283C-4C06-94DB-AB8FECB6CF9B}
+        ENDPROPERTIES
+        
+      FIELD #KdItem
+        INT
+        PROPERTIES
+          Name                #KdItem
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{71CA734A-AEED-439F-AA9B-19EBB8238FD2}
+          ExtendedDataType    #KdItem
+        ENDPROPERTIES
+        
+      FIELD #KdJnsBan
+        STRING
+        PROPERTIES
+          Name                #KdJnsBan
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{E8183727-2982-411D-BF50-6F80D7DE8DF6}
+          ExtendedDataType    #KdJnsBan
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #KdJnsPengeluaran
+        INT
+        PROPERTIES
+          Name                #KdJnsPengeluaran
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{DB5BE5BA-2BCC-4016-945D-FEA4C20EE094}
+          ExtendedDataType    #KdJnsPengeluaran
+        ENDPROPERTIES
+        
+      FIELD #KdKegiatan
+        STRING
+        PROPERTIES
+          Name                #KdKegiatan
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{FBE7EEDC-A8DC-4F8A-9122-B01D8170427D}
+          ExtendedDataType    #KdKegiatan
+          StringSize          #4
+        ENDPROPERTIES
+        
+      FIELD #KdKomponen
+        STRING
+        PROPERTIES
+          Name                #KdKomponen
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{848019DC-FBF2-40F7-A107-371E0436ECBA}
+          ExtendedDataType    #KdKomponen
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #KdOrg
+        STRING
+        PROPERTIES
+          Name                #KdOrg
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{6DDAFBCD-0563-43F7-9653-DD860898FD46}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #KdOutput
+        STRING
+        PROPERTIES
+          Name                #KdOutput
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{CF8341E1-9E29-4A1F-A7F3-1DF4CB2CFC79}
+          ExtendedDataType    #KdOutput
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #KdProgramDJA
+        STRING
+        PROPERTIES
+          Name                #KdProgramDJA
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{758245B1-1ACB-4BB2-993E-5DCB24350D94}
+          ExtendedDataType    #KdProgramDJA
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #KdSatuan
+        STRING
+        PROPERTIES
+          Name                #KdSatuan
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{3F3B6050-2C8C-4319-BC8A-B26274115AD7}
+          ExtendedDataType    #KdSatuan
+          StringSize          #25
+        ENDPROPERTIES
+        
+      FIELD #KdSubKomponen
+        STRING
+        PROPERTIES
+          Name                #KdSubKomponen
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{84FC6CB1-83BA-449B-BD7A-7A7CCDBBE3F4}
+          ExtendedDataType    #KdSubKomponen
+          StringSize          #1
+        ENDPROPERTIES
+        
+      FIELD #KdSubOutput
+        STRING
+        PROPERTIES
+          Name                #KdSubOutput
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{4DEB6A39-E898-477E-A6EB-6E6E1B7989E2}
+          ExtendedDataType    #KdSubOutput
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #KdTipeForm
+        STRING
+        PROPERTIES
+          Name                #KdTipeForm
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7BBA171B-11F7-4C3A-918D-B6BE40C6CA61}
+          ExtendedDataType    #KdTipeForm
+          StringSize          #25
+        ENDPROPERTIES
+        
+      FIELD #NOUrutItem
+        INT
+        PROPERTIES
+          Name                #NOUrutItem
+          Label               #No. Urut Item
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{C4CD257F-4653-4E9F-B307-465B21D574BD}
+        ENDPROPERTIES
+        
+      FIELD #PaguAwal
+        REAL
+        PROPERTIES
+          Name                #PaguAwal
+          Label               #Pagu Awal RKAKL
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7E635B2A-2DC3-45EE-AA61-C115FEE6D725}
+        ENDPROPERTIES
+        
+      FIELD #PaguBooked
+        REAL
+        PROPERTIES
+          Name                #PaguBooked
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7607952C-976E-42AA-BE12-CA4A7A2F6AB0}
+        ENDPROPERTIES
+        
+      FIELD #PaguRealisasi
+        REAL
+        PROPERTIES
+          Name                #PaguRealisasi
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{88B2E256-3973-4E63-BD62-1CADFFB94A7E}
+        ENDPROPERTIES
+        
+      FIELD #PaguRevisi
+        REAL
+        PROPERTIES
+          Name                #PaguRevisi
+          Label               #Pagu Revisi
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{A3A55839-26B0-40A6-89BB-B7A80CACFDAA}
+        ENDPROPERTIES
+        
+      FIELD #PaguSisa
+        REAL
+        PROPERTIES
+          Name                #PaguSisa
+          Label               #Pagu Sisa
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{52554CD1-82C2-4BA2-BA90-1C8E604C5965}
+        ENDPROPERTIES
+        
+      FIELD #register
+        STRING
+        PROPERTIES
+          Name                #register
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{3F5E5E19-A0C4-43F2-91F5-F2EAB83D9991}
+        ENDPROPERTIES
+        
+      FIELD #RevisiKe
+        INT
+        PROPERTIES
+          Name                #RevisiKe
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{E3C9BAD1-C76B-435E-8FF8-AAC02BCF9816}
+        ENDPROPERTIES
+        
+      FIELD #SelfBlocking
+        REAL
+        PROPERTIES
+          Name                #SelfBlocking
+          Label               #Self Blocking
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{9A85663D-9A53-4F40-85D9-3C076A0E22A5}
+        ENDPROPERTIES
+        
+      FIELD #StatBlok
+        ENUM
+        PROPERTIES
+          Name                #StatBlok
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7F90417D-8D90-4629-AE68-EE31A3173C90}
+          EnumType            #StatBlok
+        ENDPROPERTIES
+        
+      FIELD #StatBlok1
+        ENUM
+        PROPERTIES
+          Name                #StatBlok1
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{6EB66924-FDA7-4978-909A-0E228D0F9D25}
+          EnumType            #StatBlok
+        ENDPROPERTIES
+        
+      FIELD #Tahun
+        INT
+        PROPERTIES
+          Name                #Tahun
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7A2F88D6-E597-414F-889F-C2FA93AA94BE}
+          ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+      FIELD #TanggalBerlaku
+        DATE
+        PROPERTIES
+          Name                #TanggalBerlaku
+          Label               #Tanggal Berlaku
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{3F961196-8B00-43A9-A235-ADC539042B3C}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #TanggalTidakBerlaku
+        DATE
+        PROPERTIES
+          Name                #TanggalTidakBerlaku
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{7B850899-D876-4A19-9E7E-01957C6125FA}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #volume
+        INT
+        PROPERTIES
+          Name                #volume
+          Label               #Volume
+          Table               #BPSEntriPembiayaanPusat
+          Origin              #{E50C9C55-B129-4E02-8602-A7037977EA14}
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+      #BPSEntriPembiayaanPusat
+      PROPERTIES
+        Name                #BPSEntriPembiayaanPusat
+        Origin              #{0900C0CD-3E06-4798-8EE8-930CEAF43FE8}
+      ENDPROPERTIES
+      
+      INDEXFIELDS
+        #Tahun
+        #KdProgramDJA
+        #KdKegiatan
+        #KdOutput
+        #KdSubOutput
+        #KdKomponen
+        #KdSubKomponen
+        #kdAkun
+        #NOUrutItem
+      ENDINDEXFIELDS
+      
+      #primary
+      PROPERTIES
+        Name                #primary
+        Origin              #{3ECD7899-BC4A-46F3-B7AB-EF445E2751A2}
+      ENDPROPERTIES
+      
+      INDEXFIELDS
+        #Tahun
+        #KdProgramDJA
+        #KdKegiatan
+        #KdOutput
+        #KdSubOutput
+        #KdKomponen
+        #KdSubKomponen
+        #kdAkun
+        #NOUrutItem
+        #RevisiKe
+      ENDINDEXFIELDS
+      
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+      REFERENCE #BPSAkun
+        PROPERTIES
+          Name                #BPSAkun
+          Table               #BPSAkun
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #kdAkun
+            RelatedField        #kdAkun
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+      REFERENCE #BPSJnsPengeluaran
+        PROPERTIES
+          Name                #BPSJnsPengeluaran
+          Table               #BPSJnsPengeluaran
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdJnsPengeluaran
+            RelatedField        #KdJnsPengeluaran
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+      REFERENCE #BPSSatuan
+        PROPERTIES
+          Name                #BPSSatuan
+          Table               #BPSSatuan
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdSatuan
+            RelatedField        #KdSatuan
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+      REFERENCE #BPSSubKomponen
+        PROPERTIES
+          Name                #BPSSubKomponen
+          Table               #BPSSubKomponen
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #Tahun
+            RelatedField        #Tahun
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdProgramDJA
+            RelatedField        #KdProgramDJA
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdKegiatan
+            RelatedField        #KdKegiatan
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdOutput
+            RelatedField        #KdOutput
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdSubOutput
+            RelatedField        #KdSubOutput
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdKomponen
+            RelatedField        #KdKomponen
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdSubKomponen
+            RelatedField        #KdSubKomponen
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+      REFERENCE #BPSTipeForm
+        PROPERTIES
+          Name                #BPSTipeForm
+          Table               #BPSTipeForm
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdTipeForm
+            RelatedField        #KdTipeForm
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+      SOURCE #getDescSumberDana
+        #display Description getDescSumberDana()
+        #{
+        #    Description deskripsi;
+        #    BPSKmsJnsBeban BPSKmsJnsBeban;
+        #
+        #    deskripsi = "";
+        #    select BPSKmsJnsBeban where BPSKmsJnsBeban.KdBeban == this.KdBeban && BPSKmsJnsBeban.KdJnsBan == this.KdJnsBan;
+        #
+        #    deskripsi = BPSKmsJnsBeban.getDescSDana();
+        #
+        #
+        #    return deskripsi;
+        #}
+      ENDSOURCE
+      SOURCE #getGroupPOKn
+        #display Str60 getGroupPOKn()
+        #
+        #{
+        #    str60  GroupPOK;
+        #
+        #    GroupPOK    = this.KdProgramDJA  +" "+ this.KdKegiatan    +" "+
+        #                  this.Kdoutput      +" "+ this.KdSubOutput   +" "+
+        #                  this.kdKomponen    +" "+ this.kdSubKomponen +" "+
+        #                  this.kdAkun        +" "+ int2str(this.KdItem)+" "+ int2str(this.NOUrutItem);
+        #
+        #
+        #    return GroupPOK;
+        #}
+      ENDSOURCE
+      SOURCE #getJnsPengeluaran
+        #display Str60 getJnsPengeluaran()
+        #{
+        #    Str60 jnsPengeluaran;
+        #    BPSJnsPengeluaran BPSJnsPengeluaran;
+        #
+        #    jnsPengeluaran = "";
+        #    select BPSJnsPengeluaran where BPSJnsPengeluaran.KdJnsPengeluaran == this.KdJnsPengeluaran;
+        #    jnsPengeluaran = BPSJnsPengeluaran.NmJnsPengeluaran;
+        #
+        #    return jnsPengeluaran;
+        #}
+      ENDSOURCE
+      SOURCE #getKombinasiSumberdana
+        #display Nama getKombinasiSumberdana()
+        #{
+        #    Nama kombinasi;
+        #
+        #    kombinasi = this.KdBeban + " " + this.KdJnsBan + " " + this.KdCTarik;
+        #
+        #    return kombinasi;
+        #}
+      ENDSOURCE
+      SOURCE #getKomponen
+        #display Str60 getKomponen()
+        #{
+        #    Str60 Komponen;
+        #
+        #    Komponen = "";
+        #    Komponen = Komponen + this.KdProgramDJA;
+        #    Komponen = Komponen + " " + this.KdKegiatan;
+        #    Komponen = Komponen + " " + this.KdOutput;
+        #    Komponen = Komponen + " " + this.KdKomponen;
+        #
+        #    return Komponen;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaAkun
+        #display Description getNamaAkun()
+        #{
+        #    Description nama;
+        #    BPSAkun BPSAkun;
+        #
+        #    select BPSAkun where BPSAkun.kdAkun == this.kdAkun;
+        #    nama = BPSAkun.NmAkun;
+        #
+        #    return nama;
+        #
+        #}
+      ENDSOURCE
+      SOURCE #getNamaKegiatan
+        #display Description getNamaKegiatan()
+        #{
+        #    Description nama;
+        #    BPSKegiatan BPSKegiatan;
+        #
+        #    select BPSKegiatan where BPSKegiatan.Tahun == this.Tahun &&
+        #        BPSKegiatan.KdProgramDJA == this.KdProgramDJA &&
+        #        BPSKegiatan.KdKegiatan == this.KdKegiatan;
+        #    nama = BPSKegiatan.NmKegiatan;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaKomponen
+        #display Description getNamaKomponen()
+        #{
+        #    Description nama;
+        #    BPSKomponen BPSKomponen;
+        #
+        #    select BPSKomponen where BPSKomponen.Tahun == this.Tahun &&
+        #            BPSKomponen.KdProgramDJA == this.KdProgramDJA &&
+        #            BPSKomponen.KdKegiatan == this.KdKegiatan &&
+        #            BPSKomponen.KdOutput == this.KdOutput &&
+        #            BPSKomponen.KdSubOutput == this.KdSubOutput &&
+        #            BPSKomponen.KdKomponen == this.KdKomponen;
+        #    nama = BPSKomponen.NmKomponen;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaOutput
+        #display Description getNamaOutput()
+        #{
+        #
+        #    Description nama;
+        #    BPSOutput BPSOutput;
+        #
+        #    select BPSOutput where BPSOutput.Tahun == this.Tahun &&
+        #        BPSOutput.KdProgramDJA == this.KdProgramDJA &&
+        #        BPSOutput.KdKegiatan == this.KdKegiatan &&
+        #        BPSOutput.KdOutput == this.KdOutput;
+        #    nama = BPSOutput.NmOutput;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaProgram
+        #display Description getNamaProgram()
+        #{
+        #    Description nama;
+        #    BPSProgram BPSProgram;
+        #
+        #    select BPSProgram where BPSProgram.Tahun == this.Tahun &&
+        #            BPSProgram.KdProgramDJA == this.KdProgramDJA;
+        #    nama = BPSProgram.nmprogram;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaSubKomponen
+        #display Description getNamaSubKomponen()
+        #{
+        #    Description nama;
+        #    BPSSubKomponen BPSSubKomponen;
+        #
+        #    select BPSSubKomponen where BPSSubKomponen.Tahun == this.Tahun &&
+        #            BPSSubKomponen.KdProgramDJA == this.KdProgramDJA &&
+        #            BPSSubKomponen.KdKegiatan == this.KdKegiatan &&
+        #            BPSSubKomponen.KdOutput == this.KdOutput &&
+        #            BPSSubKomponen.KdSubOutput == this.KdSubOutput &&
+        #            BPSSubKomponen.KdKomponen == this.KdKomponen &&
+        #            BPSSubKomponen.KdSubKomponen == this.KdSubKomponen;
+        #    nama = BPSSubKomponen.NmSubKomponen;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNamaSubOutput
+        #display Description getNamaSubOutput()
+        #{
+        #    Description nama;
+        #    BPSSubOutput BPSSubOutput;
+        #
+        #    select BPSSubOutput where BPSSubOutput.Tahun == this.Tahun &&
+        #        BPSSubOutput.KdProgramDJA == this.KdProgramDJA &&
+        #        BPSSubOutput.KdKegiatan == this.KdKegiatan &&
+        #        BPSSubOutput.KdOutput == this.KdOutput &&
+        #        BPSSubOutput.KdSubOutput == this.KdSubOutput;
+        #    nama = BPSSubOutput.NmSubOutput;
+        #
+        #    return nama;
+        #}
+      ENDSOURCE
+      SOURCE #getNmCTarik
+        #display Nama getNmCTarik()
+        #{
+        #    Nama NmCTarik;
+        #    BPSKmsCTarik BPSKmsCTarik;
+        #
+        #    NmCTarik = "";
+        #    select BPSKmsCTarik where BPSKmsCTarik.KdCTarik == this.KdCTarik;
+        #    NmCTarik = BPSKmsCTarik.NmCTarik;
+        #
+        #    return NmCTarik;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

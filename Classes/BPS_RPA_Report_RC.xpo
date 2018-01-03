@@ -1,0 +1,43 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; 
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #BPS_RPA_Report_RC
+    PROPERTIES
+      Name                #BPS_RPA_Report_RC
+      Extends             #SrsReportRunController
+      Origin              #{A82D30A7-81F5-42D4-92BE-4B13C796258E}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #class BPS_RPA_Report_RC extends SrsReportRunController
+        #{
+        #}
+      ENDSOURCE
+      SOURCE #prePromptModifyContract
+        #protected void prePromptModifyContract()
+        #{
+        #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+        #    BPS_RPA_Report_DC           contract;
+        #
+        #    super();
+        #
+        #    if (this.parmArgs() && this.parmArgs().record()) {
+        #        contract = this.parmReportContract().parmRdpContract() as BPS_RPA_Report_DC;
+        #        tmp_tbl_param = this.parmArgs().record();
+        #
+        #        contract.param_pok_ref_id(tmp_tbl_param.pok_ref_id);
+        #        contract.param_triwulan(tmp_tbl_param.triwulan);
+        #    }
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END

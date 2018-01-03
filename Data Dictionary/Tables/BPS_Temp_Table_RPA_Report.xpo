@@ -1,0 +1,159 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPS_Temp_Table_RPA_Report
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPS_Temp_Table_RPA_Report
+      TableType           #InMemory
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{FAC4945A-577C-4377-B806-4B9027A9CEA3}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #akun_detail
+        STRING
+        PROPERTIES
+          Name                #akun_detail
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{44DE1DA4-F0F7-4D7C-AB8B-63163D87FFD6}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #harga_satuan
+        REAL
+        PROPERTIES
+          Name                #harga_satuan
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{A4D4D43B-E9FD-43EB-A632-74DB1FE15EEC}
+        ENDPROPERTIES
+        
+      FIELD #kd_akun
+        STRING
+        PROPERTIES
+          Name                #kd_akun
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{61A1FFFC-F7A5-4C57-BAE1-8F2A62F49F46}
+          StringSize          #30
+        ENDPROPERTIES
+        
+      FIELD #last_rpa_cumm
+        REAL
+        PROPERTIES
+          Name                #last_rpa_cumm
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{13580666-DAD5-47F4-84AD-CA8AA1300168}
+        ENDPROPERTIES
+        
+      FIELD #nilai
+        REAL
+        PROPERTIES
+          Name                #nilai
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{7C818EEE-23E9-4DCD-B4FC-4CCEFCEF2434}
+        ENDPROPERTIES
+        
+      FIELD #pagu
+        REAL
+        PROPERTIES
+          Name                #pagu
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{BDB8C7E0-0157-4B5E-84D9-69D3D8DE498F}
+        ENDPROPERTIES
+        
+      FIELD #romawi_triwulan
+        STRING
+        PROPERTIES
+          Name                #romawi_triwulan
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{51ECFC44-FF9A-4244-BEDE-F1F97B928A19}
+        ENDPROPERTIES
+        
+      FIELD #rpa_1
+        REAL
+        PROPERTIES
+          Name                #rpa_1
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{5780A75E-9A95-416F-8CAC-F90069126FE0}
+        ENDPROPERTIES
+        
+      FIELD #rpa_2
+        REAL
+        PROPERTIES
+          Name                #rpa_2
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{02684601-7122-480F-937A-03CD8C6846F5}
+        ENDPROPERTIES
+        
+      FIELD #rpa_3
+        REAL
+        PROPERTIES
+          Name                #rpa_3
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{84790655-3E6E-4DAA-933D-828300E26626}
+        ENDPROPERTIES
+        
+      FIELD #satuan
+        STRING
+        PROPERTIES
+          Name                #satuan
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{35D691C1-CE5D-4E3B-BAB3-8DA3F98C0B95}
+          ExtendedDataType    #KdSatuan
+          StringSize          #25
+        ENDPROPERTIES
+        
+      FIELD #tahun
+        INT
+        PROPERTIES
+          Name                #tahun
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{D9BF8B67-8B89-4019-94F4-FB429838D806}
+          ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+      FIELD #triwulan
+        INT
+        PROPERTIES
+          Name                #triwulan
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{57576E1C-AE06-4729-81CD-FA2ADC6D2EB7}
+        ENDPROPERTIES
+        
+      FIELD #volume
+        INT
+        PROPERTIES
+          Name                #volume
+          Table               #BPS_Temp_Table_RPA_Report
+          Origin              #{0E2FFFC1-F33B-4027-880F-B76B62EDE7DC}
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

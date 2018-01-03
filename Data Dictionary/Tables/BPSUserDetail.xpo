@@ -1,0 +1,141 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPSUserDetail
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPSUserDetail
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{B2E4BEF5-A3F0-4C9D-AA23-27818DCE6ACC}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #FlagOrg
+        INT
+        PROPERTIES
+          Name                #FlagOrg
+          Label               #Flag Organisasi BPS
+          Table               #BPSUserDetail
+          Origin              #{775F6C19-8BD7-4118-AA2B-71D13D28F3C5}
+          ExtendedDataType    #FlagOrg
+        ENDPROPERTIES
+        
+      FIELD #HakAkses
+        ENUM
+        PROPERTIES
+          Name                #HakAkses
+          Table               #BPSUserDetail
+          Origin              #{7141F7A7-E04C-4E14-904C-81A056A58DE9}
+          EnumType            #HakAkses
+        ENDPROPERTIES
+        
+      FIELD #KdOrg
+        STRING
+        PROPERTIES
+          Name                #KdOrg
+          Label               #Kode Organisasi
+          Table               #BPSUserDetail
+          Origin              #{8B293A01-E800-416F-92C5-2B49C14EEE0F}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #NIPBPS
+        STRING
+        PROPERTIES
+          Name                #NIPBPS
+          Table               #BPSUserDetail
+          Origin              #{E2A279AC-F80B-458B-92DB-9BA873A168DF}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #UserId
+        STRING
+        PROPERTIES
+          Name                #UserId
+          Mandatory           #Yes
+          AllowEdit           #No
+          Table               #BPSUserDetail
+          Origin              #{B8CF3D70-8E67-45A3-AFBB-7A413FFB73F6}
+          ExtendedDataType    #UserId
+          StringSize          #8
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+      #BPSUserDetailIdx
+      PROPERTIES
+        Name                #BPSUserDetailIdx
+        AllowDuplicates     #No
+        Origin              #{E2E1A66C-5B54-4A15-9DF4-7A81892F9B99}
+      ENDPROPERTIES
+      
+      INDEXFIELDS
+        #UserId
+      ENDINDEXFIELDS
+      
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+      REFERENCE #BPSKmsOrg
+        PROPERTIES
+          Name                #BPSKmsOrg
+          Table               #BPSKmsOrg
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #FlagOrg
+            RelatedField        #FlagOrg
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #KdOrg
+            RelatedField        #KdOrg
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+      REFERENCE #UserInfo
+        PROPERTIES
+          Name                #UserInfo
+          Table               #UserInfo
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #UserId
+            RelatedField        #id
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

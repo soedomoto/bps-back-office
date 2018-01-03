@@ -1,0 +1,285 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: FRM
+
+; 
+; --------------------------------------------------------------------------------
+FRMVERSION 12
+
+FORM #BPS_Form_Revision_RPA
+  PROPERTIES
+    Name                #BPS_Form_Revision_RPA
+    Origin              #{CE6432A7-907C-4666-8EE6-C1E1BA5AFC65}
+  ENDPROPERTIES
+  
+  METHODS
+    SOURCE #classDeclaration
+      #public class FormRun extends ObjectRun
+      #{
+      #    BPSEntriPembiayaanPusat table_pok;
+      #    BPS_Table_RPA           table_rpa, table_sum_rpa;
+      #    boolean                 is_saved;
+      #}
+    ENDSOURCE
+    SOURCE #close
+      #public void close()
+      #{
+      #    super();
+      #
+      #    if (is_saved == false) {
+      #        if (Box::yesNo("Apakah Anda ingin menyimpan revisi RPA ke-" + Txt_Revision_No.valueStr() +
+      #        " ini?", DialogButton::No) == DialogButton::Yes) {
+      #            element.save();
+      #        }
+      #    }
+      #}
+    ENDSOURCE
+    SOURCE #init
+      #public void init()
+      #{
+      #    super();
+      #
+      #    table_rpa = element.args().record();
+      #
+      #    Txt_Revision_No.value(table_rpa.RevisionNo + 1);
+      #    Txt_RPA_Amount.realValue(table_rpa.RPA);
+      #
+      #    is_saved = false;
+      #}
+    ENDSOURCE
+    SOURCE #save
+      #public void save()
+      #{
+      #    int64 rec_id;
+      #    real rpa_after = 0;
+      #
+      #    select table_pok where table_pok.RecId == table_rpa.EntriPembiayaanPusatRecId;
+      #
+      #    select sum(RPA) from table_sum_rpa where
+      #        table_sum_rpa.RevisedByRecId == 0 &&
+      #        table_sum_rpa.Tahun == table_pok.Tahun &&
+      #        table_sum_rpa.EntriPembiayaanPusatRecId == table_pok.RecId &&
+      #        table_sum_rpa.Bulan != table_rpa.Bulan;
+      #
+      #    rpa_after = table_sum_rpa.RPA + Txt_RPA_Amount.realValue();
+      #    if (rpa_after > table_pok.PaguSisa) {
+      #        Box::stop("Total RPA Rp. " + num2str(rpa_after, 0, 2, 2, 1) +
+      #        " lebih besar dari jumlah pagu sisa Rp. " + num2str(table_pok.PaguSisa, 0, 2, 2, 1));
+      #        return;
+      #    }
+      #
+      #    // Insert the new revision
+      #    BPS_Table_RPA_ds.create();
+      #    BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
+      #    BPS_Table_RPA.Bulan = table_rpa.Bulan;
+      #    BPS_Table_RPA.EntriPembiayaanPusatRecId = table_rpa.EntriPembiayaanPusatRecId;
+      #    BPS_Table_RPA.RevisionNo = Txt_Revision_No.value();
+      #    BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
+      #    BPS_Table_RPA.Tahun = table_rpa.Tahun;
+      #    BPS_Table_RPA.insert();
+      #    BPS_Table_RPA_ds.reread();
+      #    BPS_Table_RPA_ds.refresh();
+      #
+      #    // Set field RevisedByRecId value of last revised record
+      #    rec_id = table_rpa.RecId;
+      #    select table_rpa where table_rpa.RecId == rec_id;
+      #
+      #    table_rpa.RevisedByRecId = BPS_Table_RPA.RecId;
+      #    table_rpa.update();
+      #
+      #    Box::info("Revisi RPA ke-" + int2str(BPS_Table_RPA.RevisionNo) + " berhasil disimpan.");
+      #}
+    ENDSOURCE
+  ENDMETHODS
+  OBJECTBANK
+    PROPERTIES
+    ENDPROPERTIES
+    
+    DATASOURCE
+      OBJECTPOOL
+        PROPERTIES
+          Name                #BPS_Table_RPA
+          Table               #BPS_Table_RPA
+        ENDPROPERTIES
+        
+        FIELDLIST
+        ENDFIELDLIST
+      ENDOBJECTPOOL
+      METHODS
+      ENDMETHODS
+    ENDDATASOURCE
+  ENDOBJECTBANK
+  
+  REFERENCEDATASOURCES
+  ENDREFERENCEDATASOURCES
+  
+  JOINS
+  ENDJOINS
+  
+  PARTREFERENCES
+  ENDPARTREFERENCES
+  
+  DESIGN
+    PROPERTIES
+    ENDPROPERTIES
+    
+    CONTAINER
+      CONTROL GROUP
+        PROPERTIES
+          Name                #Group
+          Width               #Column width
+          ElementPosition     #1431655764
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #Group1
+          Width               #Column width
+          ElementPosition     #715827882
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #Btn_Save
+          Left                #Auto (right)
+          ElementPosition     #1431655764
+          HierarchyParent     #Group
+          Text                #Simpan
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    element.save();
+            #    is_saved = true;
+            #
+            #    super();
+            #    element.close();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL INTEDIT
+        PROPERTIES
+          Name                #Txt_Revision_No
+          AutoDeclaration     #Yes
+          AllowEdit           #No
+          ElementPosition     #1073741822
+          HierarchyParent     #Group1
+          Label               #Revisi ke
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #Txt_RPA_Amount
+          AutoDeclaration     #Yes
+          ElementPosition     #1610612733
+          HierarchyParent     #Group1
+          Label               #Jumlah RPA Rp.
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+    ENDCONTAINER
+    
+  ENDDESIGN
+  
+  PERMISSIONS #Permissions
+    PROPERTIES
+    ENDPROPERTIES
+    
+    PERMISSIONSET #Read
+      PROPERTIES
+      ENDPROPERTIES
+      
+      FORM #Controls
+      ENDFORM
+      
+    TABLES #Tables
+    ENDTABLES
+    
+  SERVERMETHODS #Server Methods
+  ENDSERVERMETHODS
+  
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Update
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Create
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Delete
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+ENDPERMISSIONS
+
+ENDFORM
+
+
+***Element: END

@@ -1,0 +1,44 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; 
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #BPS_RPA_Report_DC
+    PROPERTIES
+      Name                #BPS_RPA_Report_DC
+      Origin              #{6784E86D-DD1E-445A-B369-4E0297B67F9E}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #[DataContractAttribute]
+        #class BPS_RPA_Report_DC
+        #{
+        #    RefRecId    pok_ref_id;
+        #    int         triwulan;
+        #}
+      ENDSOURCE
+      SOURCE #param_pok_ref_id
+        #[DataMemberAttribute("pok_ref_id")]
+        #public RefRecId param_pok_ref_id(RefRecId _pok_ref_id = pok_ref_id)
+        #{
+        #    pok_ref_id = _pok_ref_id;
+        #    return pok_ref_id;
+        #}
+      ENDSOURCE
+      SOURCE #param_triwulan
+        #[DataMemberAttribute("triwulan")]
+        #public int param_triwulan(int _triwulan = triwulan)
+        #{
+        #    triwulan = _triwulan;
+        #    return triwulan;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END

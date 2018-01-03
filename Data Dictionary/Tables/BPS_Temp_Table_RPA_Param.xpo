@@ -1,0 +1,58 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPS_Temp_Table_RPA_Param
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPS_Temp_Table_RPA_Param
+      TableType           #InMemory
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{C1E06117-5576-4102-9BFB-DBE177A7E046}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #pok_ref_id
+        INT64
+        PROPERTIES
+          Name                #pok_ref_id
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{8D08F1CA-3870-478D-9EB9-3C927F9DF44D}
+          ExtendedDataType    #RefRecId
+        ENDPROPERTIES
+        
+      FIELD #triwulan
+        INT
+        PROPERTIES
+          Name                #triwulan
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{95036FE5-994E-4CAF-9D5B-7A2677F04F36}
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END
