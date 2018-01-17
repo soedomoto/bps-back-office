@@ -42,11 +42,12 @@ FORM #BPS_Form_Add_RPA
       #
       #    query = new Query();
       #    qb_ds = query.addDataSource(tableNum(BPS_Table_RPA));
-      #    qb_ds.addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(table_pok.RecId));
+      #    // qb_ds.addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(table_pok.RecId));
       #    qb_ds.addRange(fieldNum(BPS_Table_RPA, Tahun)).value(int2str(table_pok.Tahun));
       #    qb_ds.addSortField(fieldNum(BPS_Table_RPA, Bulan));
       #    run = new QueryRun(query);
       #    while (run.next()) {
+      #        /**
       #        rec_rpa = run.GetNo(1);
       #        if (rec_rpa.RevisedByRecId == 0) {
       #            month_exists = false;
@@ -62,6 +63,7 @@ FORM #BPS_Form_Add_RPA
       #                m = m+1;
       #            }
       #        }
+      #        */
       #    }
       #
       #    CB_Month.clear();
@@ -88,6 +90,7 @@ FORM #BPS_Form_Add_RPA
       #    int m;
       #    for (m=0; m<enum_month.values(); m++) {
       #        if (CB_Month.valueStr() == enum_month.index2Label(m)) {
+      #            /**
       #            select sum(RPA) from table_sum_rpa where
       #                table_sum_rpa.RevisedByRecId == 0 &&
       #                table_sum_rpa.Tahun == table_pok.Tahun &&
@@ -100,13 +103,13 @@ FORM #BPS_Form_Add_RPA
       #                " lebih besar dari jumlah pagu sisa Rp. " + num2str(table_pok.PaguSisa, 0, 2, 2, 1));
       #                return;
       #            }
-      #
+      #            */
       #            BPS_Table_RPA_ds.create();
-      #            BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
+      #            // BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
       #            BPS_Table_RPA.Bulan = m+1;
-      #            BPS_Table_RPA.EntriPembiayaanPusatRecId = table_pok.RecId;
-      #            BPS_Table_RPA.RevisionNo = 0;
-      #            BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
+      #            // BPS_Table_RPA.EntriPembiayaanPusatRecId = table_pok.RecId;
+      #            // BPS_Table_RPA.RevisionNo = 0;
+      #            // BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
       #            BPS_Table_RPA.Tahun = 2016;
       #            BPS_Table_RPA.insert();
       #            BPS_Table_RPA_ds.reread();

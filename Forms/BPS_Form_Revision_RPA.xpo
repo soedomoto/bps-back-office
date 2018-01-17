@@ -42,8 +42,8 @@ FORM #BPS_Form_Revision_RPA
       #
       #    table_rpa = element.args().record();
       #
-      #    Txt_Revision_No.value(table_rpa.RevisionNo + 1);
-      #    Txt_RPA_Amount.realValue(table_rpa.RPA);
+      #    // Txt_Revision_No.value(table_rpa.RevisionNo + 1);
+      #    // Txt_RPA_Amount.realValue(table_rpa.RPA);
       #
       #    is_saved = false;
       #}
@@ -54,8 +54,8 @@ FORM #BPS_Form_Revision_RPA
       #    int64 rec_id;
       #    real rpa_after = 0;
       #
-      #    select table_pok where table_pok.RecId == table_rpa.EntriPembiayaanPusatRecId;
-      #
+      #    // select table_pok where table_pok.RecId == table_rpa.EntriPembiayaanPusatRecId;
+      #    /**
       #    select sum(RPA) from table_sum_rpa where
       #        table_sum_rpa.RevisedByRecId == 0 &&
       #        table_sum_rpa.Tahun == table_pok.Tahun &&
@@ -68,14 +68,14 @@ FORM #BPS_Form_Revision_RPA
       #        " lebih besar dari jumlah pagu sisa Rp. " + num2str(table_pok.PaguSisa, 0, 2, 2, 1));
       #        return;
       #    }
-      #
+      #    */
       #    // Insert the new revision
       #    BPS_Table_RPA_ds.create();
-      #    BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
+      #    // BPS_Table_RPA.ApprovalStatus = StatusUsulanCP::EntriUsulan;
       #    BPS_Table_RPA.Bulan = table_rpa.Bulan;
-      #    BPS_Table_RPA.EntriPembiayaanPusatRecId = table_rpa.EntriPembiayaanPusatRecId;
-      #    BPS_Table_RPA.RevisionNo = Txt_Revision_No.value();
-      #    BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
+      #    // BPS_Table_RPA.EntriPembiayaanPusatRecId = table_rpa.EntriPembiayaanPusatRecId;
+      #    // BPS_Table_RPA.RevisionNo = Txt_Revision_No.value();
+      #    // BPS_Table_RPA.RPA = Txt_RPA_Amount.realValue();
       #    BPS_Table_RPA.Tahun = table_rpa.Tahun;
       #    BPS_Table_RPA.insert();
       #    BPS_Table_RPA_ds.reread();
@@ -85,10 +85,10 @@ FORM #BPS_Form_Revision_RPA
       #    rec_id = table_rpa.RecId;
       #    select table_rpa where table_rpa.RecId == rec_id;
       #
-      #    table_rpa.RevisedByRecId = BPS_Table_RPA.RecId;
+      #    // table_rpa.RevisedByRecId = BPS_Table_RPA.RecId;
       #    table_rpa.update();
       #
-      #    Box::info("Revisi RPA ke-" + int2str(BPS_Table_RPA.RevisionNo) + " berhasil disimpan.");
+      #    // Box::info("Revisi RPA ke-" + int2str(BPS_Table_RPA.RevisionNo) + " berhasil disimpan.");
       #}
     ENDSOURCE
   ENDMETHODS

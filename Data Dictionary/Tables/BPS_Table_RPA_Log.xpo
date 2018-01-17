@@ -1,0 +1,151 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPS_Table_RPA_Log
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPS_Table_RPA_Log
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{0BED3F8C-E858-4226-A896-32513E8DF5D3}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #bulan
+        INT
+        PROPERTIES
+          Name                #bulan
+          Table               #BPS_Table_RPA_Log
+          Origin              #{960F5C34-E327-4949-A224-0AB0E0B20918}
+        ENDPROPERTIES
+        
+      FIELD #kd_akun
+        STRING
+        PROPERTIES
+          Name                #kd_akun
+          Table               #BPS_Table_RPA_Log
+          Origin              #{1EE0D1C3-C1FC-4DA4-A864-BFDBB5C8FCAB}
+          ExtendedDataType    #kdAkun
+        ENDPROPERTIES
+        
+      FIELD #kd_kegiatan
+        STRING
+        PROPERTIES
+          Name                #kd_kegiatan
+          Table               #BPS_Table_RPA_Log
+          Origin              #{9D1DE4E3-A771-4F4C-BD49-8A3B42017446}
+          ExtendedDataType    #KdKegiatan
+          StringSize          #4
+        ENDPROPERTIES
+        
+      FIELD #kd_komponen
+        STRING
+        PROPERTIES
+          Name                #kd_komponen
+          Table               #BPS_Table_RPA_Log
+          Origin              #{18982CED-6850-4EB2-98D5-D09875E5D2A2}
+          ExtendedDataType    #KdKomponen
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_organisasi
+        STRING
+        PROPERTIES
+          Name                #kd_organisasi
+          Table               #BPS_Table_RPA_Log
+          Origin              #{B40F9A97-3E9C-4BEC-84D9-52B0B33E0C29}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_output
+        STRING
+        PROPERTIES
+          Name                #kd_output
+          Table               #BPS_Table_RPA_Log
+          Origin              #{1586E8A5-F078-4309-98EF-33B5B30A8C5E}
+          ExtendedDataType    #kdoutput
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_program
+        STRING
+        PROPERTIES
+          Name                #kd_program
+          Table               #BPS_Table_RPA_Log
+          Origin              #{792D883A-43B1-426A-8A75-0B659EEA51A3}
+          ExtendedDataType    #KdProgramDJA
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #no_item
+        INT
+        PROPERTIES
+          Name                #no_item
+          Table               #BPS_Table_RPA_Log
+          Origin              #{F683EAFB-E2C5-4811-B289-B71E1A6BC8AB}
+        ENDPROPERTIES
+        
+      FIELD #peg_entri
+        STRING
+        PROPERTIES
+          Name                #peg_entri
+          Table               #BPS_Table_RPA_Log
+          Origin              #{9C595AD9-16DE-4F28-AC89-EA983347DE57}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #rpa
+        REAL
+        PROPERTIES
+          Name                #rpa
+          Table               #BPS_Table_RPA_Log
+          Origin              #{F2CCDE4A-BE65-45A7-9F1C-83E83E0A17A4}
+        ENDPROPERTIES
+        
+      FIELD #tahun
+        INT
+        PROPERTIES
+          Name                #tahun
+          Table               #BPS_Table_RPA_Log
+          Origin              #{D4B885B8-B1AA-428A-BA69-8709FB0393EA}
+          ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+      FIELD #tgl_entri
+        DATE
+        PROPERTIES
+          Name                #tgl_entri
+          Table               #BPS_Table_RPA_Log
+          Origin              #{DE418D71-6B68-4C75-9376-EEA27170C791}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

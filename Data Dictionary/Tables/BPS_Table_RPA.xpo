@@ -14,70 +14,294 @@ Formatversion: 1
       CreateRecIdIndex    #Yes
       PrimaryIndex        #SurrogateKey
       ClusterIndex        #SurrogateKey
-      Origin              #{DD97B6AC-E124-44E0-92C0-4DE6713938B5}
+      Origin              #{03C430D7-91BE-4389-A1C3-9E336D8EBBC7}
     ENDPROPERTIES
     
     FIELDS
-      FIELD #ApprovalStatus
-        ENUM
-        PROPERTIES
-          Name                #ApprovalStatus
-          Table               #BPS_Table_RPA
-          Origin              #{D02DDA02-073C-4A39-8BEA-CBA7116D4DC0}
-          EnumType            #StatusUsulanCP
-        ENDPROPERTIES
-        
-      FIELD #Bulan
-        ENUM
-        PROPERTIES
-          Name                #Bulan
-          Table               #BPS_Table_RPA
-          Origin              #{44356AF4-BFFF-4DEC-961F-41505782CDA1}
-          EnumType            #Bulan
-        ENDPROPERTIES
-        
-      FIELD #EntriPembiayaanPusatRecId
-        INT64
-        PROPERTIES
-          Name                #EntriPembiayaanPusatRecId
-          Table               #BPS_Table_RPA
-          Origin              #{11414186-9973-4921-A77B-C3E385A91A27}
-          ExtendedDataType    #RefRecId
-        ENDPROPERTIES
-        
-      FIELD #RevisedByRecId
-        INT64
-        PROPERTIES
-          Name                #RevisedByRecId
-          Table               #BPS_Table_RPA
-          Origin              #{D07C514E-B58A-4EBA-842D-C69CE6919A8C}
-          ExtendedDataType    #RefRecId
-        ENDPROPERTIES
-        
-      FIELD #RevisionNo
+      FIELD #bulan
         INT
         PROPERTIES
-          Name                #RevisionNo
+          Name                #bulan
           Table               #BPS_Table_RPA
-          Origin              #{6F828D65-C059-4930-9B6E-69A1FA1EC832}
+          Origin              #{37C0A368-87F7-4E43-895F-7C1800F5A61C}
         ENDPROPERTIES
         
-      FIELD #RPA
+      FIELD #item_detail
+        STRING
+        PROPERTIES
+          Name                #item_detail
+          Table               #BPS_Table_RPA
+          Origin              #{566AA018-C29D-44BC-A8A2-17D0808E9EA9}
+          ExtendedDataType    #Description
+          StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #kd_akun
+        STRING
+        PROPERTIES
+          Name                #kd_akun
+          Table               #BPS_Table_RPA
+          Origin              #{8DD825AB-88E1-41B4-B7CA-03481811E6BC}
+          ExtendedDataType    #kdAkun
+        ENDPROPERTIES
+        
+      FIELD #kd_kegiatan
+        STRING
+        PROPERTIES
+          Name                #kd_kegiatan
+          Table               #BPS_Table_RPA
+          Origin              #{6392B930-742C-4172-ADC1-2F4BC188BEC7}
+          ExtendedDataType    #KdKegiatan
+          StringSize          #4
+        ENDPROPERTIES
+        
+      FIELD #kd_komponen
+        STRING
+        PROPERTIES
+          Name                #kd_komponen
+          Table               #BPS_Table_RPA
+          Origin              #{31E6452A-4EF9-4246-A2F8-55EA7BDB495F}
+          ExtendedDataType    #KdKomponen
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_organisasi
+        STRING
+        PROPERTIES
+          Name                #kd_organisasi
+          Table               #BPS_Table_RPA
+          Origin              #{9819302D-36B4-4955-8D77-7C1AD885DC87}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_output
+        STRING
+        PROPERTIES
+          Name                #kd_output
+          Table               #BPS_Table_RPA
+          Origin              #{3954224C-0326-4E35-99BB-3A78740FE419}
+          ExtendedDataType    #kdoutput
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_program
+        STRING
+        PROPERTIES
+          Name                #kd_program
+          Table               #BPS_Table_RPA
+          Origin              #{BBDC684F-FBA1-45FD-8E58-FC48D66B1427}
+          ExtendedDataType    #KdProgramDJA
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #no_item
+        INT
+        PROPERTIES
+          Name                #no_item
+          Table               #BPS_Table_RPA
+          Origin              #{2C015BFC-2EDF-4174-8EEA-65AEE7ED5C9E}
+        ENDPROPERTIES
+        
+      FIELD #pagu_awal
         REAL
         PROPERTIES
-          Name                #RPA
+          Name                #pagu_awal
           Table               #BPS_Table_RPA
-          Origin              #{FC4B0AE1-050B-4ABC-A220-68AD13ED7934}
+          Origin              #{A41319E0-8609-49AA-B55F-A79ED2B0CFD0}
         ENDPROPERTIES
         
-      FIELD #Tahun
+      FIELD #pagu_booked
+        REAL
+        PROPERTIES
+          Name                #pagu_booked
+          Table               #BPS_Table_RPA
+          Origin              #{72158130-168E-4179-9CDF-5070B98F46C2}
+        ENDPROPERTIES
+        
+      FIELD #pagu_realisasi
+        REAL
+        PROPERTIES
+          Name                #pagu_realisasi
+          Table               #BPS_Table_RPA
+          Origin              #{084E83B1-50D4-4BAB-88EC-4959EBB1ACBA}
+        ENDPROPERTIES
+        
+      FIELD #pagu_revisi
+        REAL
+        PROPERTIES
+          Name                #pagu_revisi
+          Table               #BPS_Table_RPA
+          Origin              #{A0A9B9EC-26D0-4EA0-B934-4587661B083F}
+        ENDPROPERTIES
+        
+      FIELD #pagu_sisa
+        REAL
+        PROPERTIES
+          Name                #pagu_sisa
+          Table               #BPS_Table_RPA
+          Origin              #{D962CD5C-2B51-46E1-9652-5F8CC99F93CA}
+        ENDPROPERTIES
+        
+      FIELD #peg_entri
+        STRING
+        PROPERTIES
+          Name                #peg_entri
+          Table               #BPS_Table_RPA
+          Origin              #{444FCF6A-E8BF-48E4-B6AE-6B5D4C80BC2D}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #peg_submit
+        STRING
+        PROPERTIES
+          Name                #peg_submit
+          Table               #BPS_Table_RPA
+          Origin              #{D9786C26-C78E-42AD-93CD-1830480115B7}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_1
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_1
+          Table               #BPS_Table_RPA
+          Origin              #{C6F2A176-6841-4B07-B075-0583C8D4C53A}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_10
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_10
+          Table               #BPS_Table_RPA
+          Origin              #{42EB5888-19EA-4A66-912D-05C571CF13C7}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_11
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_11
+          Table               #BPS_Table_RPA
+          Origin              #{F7723B44-042C-4DF5-B765-BA5443ECBA0D}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_12
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_12
+          Table               #BPS_Table_RPA
+          Origin              #{B48EB9AB-2485-4D1A-AB92-2430FF302286}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_2
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_2
+          Table               #BPS_Table_RPA
+          Origin              #{66D039E6-1860-4844-AEB1-51EEEDFE0DF2}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_3
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_3
+          Table               #BPS_Table_RPA
+          Origin              #{2B4D8D2B-6539-4536-9851-B5ED6915C532}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_4
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_4
+          Table               #BPS_Table_RPA
+          Origin              #{0373767A-0A3E-434D-8C32-399827778039}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_5
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_5
+          Table               #BPS_Table_RPA
+          Origin              #{1B1DB3CF-12EF-428F-A728-92AB18D3A069}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_6
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_6
+          Table               #BPS_Table_RPA
+          Origin              #{BD9739E2-1FD1-412C-B027-EDEDA55EBC80}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_7
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_7
+          Table               #BPS_Table_RPA
+          Origin              #{4F53E575-19F5-4B85-975E-5FF8AB737C0B}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_8
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_8
+          Table               #BPS_Table_RPA
+          Origin              #{D245D653-131C-4DE5-B50F-796293BEC1A7}
+        ENDPROPERTIES
+        
+      FIELD #rpa_bln_9
+        REAL
+        PROPERTIES
+          Name                #rpa_bln_9
+          Table               #BPS_Table_RPA
+          Origin              #{C374D033-1150-4A5B-B793-C2A2E39193D2}
+        ENDPROPERTIES
+        
+      FIELD #tahun
         INT
         PROPERTIES
-          Name                #Tahun
-          Label               #Tahun Anggaran
+          Name                #tahun
           Table               #BPS_Table_RPA
-          Origin              #{882BCD2D-3516-4A0E-85DE-315454B4E662}
+          Origin              #{1753ACC1-188B-405E-AA19-BBEB13D1834F}
           ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+      FIELD #tgl_entri
+        DATE
+        PROPERTIES
+          Name                #tgl_entri
+          Table               #BPS_Table_RPA
+          Origin              #{5811BF3C-D4A0-4B67-AFCD-8C77E2094ACC}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #tgl_es2_setuju
+        DATE
+        PROPERTIES
+          Name                #tgl_es2_setuju
+          Table               #BPS_Table_RPA
+          Origin              #{81416202-2E8D-45DD-A618-77ECC458AF84}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #tgl_ppk_setuju
+        DATE
+        PROPERTIES
+          Name                #tgl_ppk_setuju
+          Table               #BPS_Table_RPA
+          Origin              #{00F02ECC-EEF0-42DD-B0BF-B67D400A4E3D}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #tgl_submit
+        DATE
+        PROPERTIES
+          Name                #tgl_submit
+          Table               #BPS_Table_RPA
+          Origin              #{656190B3-944B-498B-ADD6-8ECC1C511FF2}
+          ExtendedDataType    #dateDDMMYYYY
         ENDPROPERTIES
         
     ENDFIELDS
@@ -85,51 +309,109 @@ Formatversion: 1
     ENDGROUPS
     
     INDICES
-      #BPSRPAIdx
-      PROPERTIES
-        Name                #BPSRPAIdx
-        AllowDuplicates     #No
-        Origin              #{6B7C1BC2-315D-4651-9323-803BD0DBF3AE}
-      ENDPROPERTIES
-      
-      INDEXFIELDS
-        #RevisionNo
-        #EntriPembiayaanPusatRecId
-        #Bulan
-      ENDINDEXFIELDS
-      
     ENDINDICES
     FULLTEXTINDICES
     ENDFULLTEXTINDICES
     REFERENCES
-      REFERENCE #BPSEntriPembiayaanPusat
-        PROPERTIES
-          Name                #BPSEntriPembiayaanPusat
-          Table               #BPSEntriPembiayaanPusat
-          UseDefaultRoleNames #Yes
-        ENDPROPERTIES
-        
-        FIELDREFERENCES
-          REFERENCETYPE NORMAL
-          PROPERTIES
-            Field               #Tahun
-            RelatedField        #Tahun
-          ENDPROPERTIES
-          
-          REFERENCETYPE NORMAL
-          PROPERTIES
-            Field               #EntriPembiayaanPusatRecId
-            RelatedField        #RecId
-          ENDPROPERTIES
-          
-        ENDFIELDREFERENCES
-      ENDREFERENCE
     ENDREFERENCES
     
     DELETEACTIONS
     ENDDELETEACTIONS
     
     METHODS
+      SOURCE #get_group_pok
+        #display Str60 get_group_pok()
+        #
+        #{
+        #    str60  GroupPOK;
+        #
+        #    GroupPOK    = this.kd_program + " " + this.kd_kegiatan + " " +
+        #                  this.kd_output + " " + this.kd_komponen + " " +
+        #                  this.kd_akun + " " + int2str(this.no_item);
+        #
+        #
+        #    return GroupPOK;
+        #}
+      ENDSOURCE
+      SOURCE #get_kumulatif
+        #display real get_kumulatif()
+        #{
+        #    real rpa = this.pagu_realisasi +
+        #                this.rpa_bln_1 + this.rpa_bln_2 + this.rpa_bln_3 +
+        #                this.rpa_bln_4 + this.rpa_bln_5 + this.rpa_bln_6 +
+        #                this.rpa_bln_7 + this.rpa_bln_8 + this.rpa_bln_9 +
+        #                this.rpa_bln_10 + this.rpa_bln_11 + this.rpa_bln_12;
+        #    return rpa;
+        #}
+      ENDSOURCE
+      SOURCE #get_notes
+        #display Str60 get_notes()
+        #{
+        #    Str60 notes = "Belum Dientri";
+        #
+        #    if (this.tgl_entri) {
+        #        if (this.is_exceeded()) {
+        #            notes = "RPA melebihi pagu sisa";
+        #        } else if (! this.is_optimal()) {
+        #            notes = "Masih ada sisa pagu";
+        #        } else {
+        #            notes = "OK";
+        #        }
+        #    }
+        #
+        #    return notes;
+        #}
+      ENDSOURCE
+      SOURCE #is_approved_by_es_2
+        #display boolean is_approved_by_es_2()
+        #{
+        #    if (this.tgl_es2_setuju) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_approved_by_ppk
+        #display boolean is_approved_by_ppk()
+        #{
+        #    if (this.tgl_ppk_setuju) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_editable
+        #display boolean is_editable()
+        #{
+        #    if (this.tgl_ppk_setuju || this.tgl_es2_setuju) {
+        #        return false;
+        #    }
+        #
+        #    return true;
+        #}
+      ENDSOURCE
+      SOURCE #is_exceeded
+        #display boolean is_exceeded()
+        #{
+        #    if (this.get_kumulatif() > this.pagu_sisa) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_optimal
+        #display boolean is_optimal()
+        #{
+        #    if (this.get_kumulatif() == this.pagu_sisa) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
     ENDMETHODS
   ENDTABLE
   

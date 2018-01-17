@@ -69,6 +69,12 @@ Formatversion: 1
         NODETYPE 201
         NAME #BPS_Form_RPA
       ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 11
+        NODETYPE 201
+        NAME #BPS_Form_RPA_V2
+      ENDNODE
       ENDGROUP
       
     GROUP #DataDictionary
@@ -79,6 +85,26 @@ Formatversion: 1
         PreventEditProperties #No
       ENDPROPERTIES
       
+      GROUP #Queries
+        PROPERTIES
+          Name                #Queries
+          ProjectGroupType    #Queries
+          GroupMask           #
+          PreventEditProperties #No
+        ENDPROPERTIES
+        
+        ENDGROUP
+        
+      GROUP #Views
+        PROPERTIES
+          Name                #Views
+          ProjectGroupType    #Views
+          GroupMask           #
+          PreventEditProperties #No
+        ENDPROPERTIES
+        
+        ENDGROUP
+        
       GROUP #BaseEnums
         PROPERTIES
           Name                #BaseEnums
@@ -87,6 +113,12 @@ Formatversion: 1
           PreventEditProperties #No
         ENDPROPERTIES
         
+        BEGINNODE
+          FILETYPE 0
+          UTILTYPE 40
+          NODETYPE 209
+          NAME #BPS_Enum_Triwulan
+        ENDNODE
         BEGINNODE
           FILETYPE 0
           UTILTYPE 40
@@ -103,6 +135,24 @@ Formatversion: 1
           PreventEditProperties #No
         ENDPROPERTIES
         
+        BEGINNODE
+          FILETYPE 0
+          UTILTYPE 44
+          NODETYPE 204
+          NAME #BPSKmsOrg
+        ENDNODE
+        BEGINNODE
+          FILETYPE 0
+          UTILTYPE 44
+          NODETYPE 204
+          NAME #BPS_Table_RPA_Log
+        ENDNODE
+        BEGINNODE
+          FILETYPE 0
+          UTILTYPE 44
+          NODETYPE 204
+          NAME #BPS_Table_RPA
+        ENDNODE
         BEGINNODE
           FILETYPE 0
           UTILTYPE 44
@@ -143,7 +193,7 @@ Formatversion: 1
           FILETYPE 0
           UTILTYPE 44
           NODETYPE 204
-          NAME #BPS_Table_RPA
+          NAME #BPS_Table_RPA_V1
         ENDNODE
         ENDGROUP
         

@@ -108,9 +108,9 @@ FORM #BPS_Form_RPA
       #public void refresh()
       #{
       #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
+      #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
       #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, tahun)).value(int2str(BPSEntriPembiayaanPusat.Tahun));
-      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
+      #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
       #    BPS_Table_RPA_ds.executeQuery();
       #    BPS_Table_RPA_ds.refresh();
       #}
@@ -136,6 +136,7 @@ FORM #BPS_Form_RPA
           #public void displayOption(BPSEntriPembiayaanPusat _record,
           #FormRowDisplayOption _options)
           #{
+          #    /*
           #    BPS_Table_RPA table_sum_rpa;
           #    select sum(RPA) from table_sum_rpa where
           #        table_sum_rpa.RevisedByRecId == 0 &&
@@ -145,7 +146,7 @@ FORM #BPS_Form_RPA
           #    if (table_sum_rpa.RPA > _record.PaguSisa) {
           #        _options.backColor(red_color);
           #    }
-          #
+          #    */
           #    super(_record, _options);
           #}
         ENDSOURCE
@@ -153,9 +154,9 @@ FORM #BPS_Form_RPA
           #public int active()
           #{
           #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-          #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
+          #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
           #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, tahun)).value(int2str(BPSEntriPembiayaanPusat.Tahun));
-          #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
+          #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
           #    BPS_Table_RPA_ds.executeQuery();
           #    BPS_Table_RPA_ds.refresh();
           #
@@ -589,7 +590,7 @@ FORM #BPS_Form_RPA
           HierarchyParent     #Grid_RPA
           Label               #Approval Status
           DataSource          #BPS_Table_RPA
-          DataField           #ApprovalStatus
+          DataField           #ApprovalStatus[1]
         ENDPROPERTIES
         
         METHODS
@@ -603,7 +604,7 @@ FORM #BPS_Form_RPA
           ElementPosition     #858993458
           HierarchyParent     #Grid_RPA
           DataSource          #BPS_Table_RPA
-          DataField           #Bulan
+          DataField           #bulan
         ENDPROPERTIES
         
         METHODS
@@ -945,7 +946,7 @@ FORM #BPS_Form_RPA
           HierarchyParent     #Grid_RPA
           Label               #Revisi
           DataSource          #BPS_Table_RPA
-          DataField           #RevisionNo
+          DataField           #RevisionNo[1]
         ENDPROPERTIES
         
         METHODS
@@ -1010,7 +1011,7 @@ FORM #BPS_Form_RPA
           ElementPosition     #1288490187
           HierarchyParent     #Grid_RPA
           DataSource          #BPS_Table_RPA
-          DataField           #RPA
+          DataField           #RPA[1]
         ENDPROPERTIES
         
         METHODS

@@ -198,6 +198,7 @@ Formatversion: 1
         #        table_report.pagu = 0;
         #        table_report.volume = 0;
         #        table_report.satuan = "";
+        #        table_report.harga_satuan = 0;
         #        table_report.nilai = 0;
         #        table_report.rpa_1 = 0;
         #        table_report.rpa_2 = 0;
@@ -220,6 +221,7 @@ Formatversion: 1
         #            table_report.last_rpa_cumm = 0;
         #            table_report.volume = 0;
         #            table_report.satuan = "";
+        #            table_report.harga_satuan = 0;
         #            table_report.nilai = 0;
         #            table_report.rpa_1 = 0;
         #            table_report.rpa_2 = 0;
@@ -234,7 +236,7 @@ Formatversion: 1
         #                pok.kdAkun == akun_pok.kdAkun &&
         #                pok.KdOrg == sel_pok.KdOrg &&
         #                pok.Tahun == sel_pok.Tahun {
-        #
+        #                /**
         #                select sum(RPA) from rpa_cumm_before where
         #                    rpa_cumm_before.EntriPembiayaanPusatRecId == pok.RecId &&
         #                    rpa_cumm_before.RevisedByRecId == 0 &&
@@ -260,12 +262,14 @@ Formatversion: 1
         #                table_report.last_rpa_cumm = rpa_cumm_before.RPA;
         #                table_report.volume = pok.volume;
         #                table_report.satuan = pok.KdSatuan;
-        #                table_report.nilai = 0;
+        #                table_report.harga_satuan = pok.hargaSatuan;
+        #                table_report.nilai = table_report.volume * table_report.harga_satuan;
         #                table_report.rpa_1 = rpa_1.RPA;
         #                table_report.rpa_2 = rpa_2.RPA;
         #                table_report.rpa_3 = rpa_3.RPA;
         #
         #                table_report.insert();
+        #                */
         #            }
         #        }
         #    }
