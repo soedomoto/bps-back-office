@@ -32,8 +32,14 @@ Formatversion: 1
         #        contract = this.parmReportContract().parmRdpContract() as BPS_RPA_Report_DC;
         #        tmp_tbl_param = this.parmArgs().record();
         #
-        #        contract.param_pok_ref_id(tmp_tbl_param.pok_ref_id);
-        #        contract.param_triwulan(tmp_tbl_param.triwulan);
+        #        contract.param_tahun(tmp_tbl_param.tahun);
+        #        contract.param_bulan(tmp_tbl_param.bulan);
+        #        contract.param_kd_org(tmp_tbl_param.kd_organisasi);
+        #        contract.param_kd_program(tmp_tbl_param.kd_program);
+        #        contract.param_kd_kegiatan(tmp_tbl_param.kd_kegiatan);
+        #        contract.param_kd_output(tmp_tbl_param.kd_output);
+        #        contract.param_kd_komponen(tmp_tbl_param.kd_komponen);
+        #        contract.param_kd_akun(tmp_tbl_param.kd_akun);
         #    }
         #}
       ENDSOURCE

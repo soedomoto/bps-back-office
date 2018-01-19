@@ -22,6 +22,7 @@ Formatversion: 1
         #]
         #class BPS_RPA_Report_DP extends SRSReportDataProviderBase
         #{
+        #    /**
         #    BPS_Enum_Month                      month;
         #    int                                 month_1, month_2, month_3, triwulan;
         #    date                                now;
@@ -40,16 +41,18 @@ Formatversion: 1
         #    BPSOutput                           sel_output;
         #    BPSKomponen                         sel_komponen;
         #    BPSAkun                             sel_akun;
+        #    */
         #
-        #    BPS_RPA_Report_DC                   contract;
-        #    BPS_Temp_Table_RPA_Report           table_report;
-        #    BPS_Temp_Table_RPA_Report_Header    table_report_header;
+        #    // BPS_RPA_Report_DC                   contract;
+        #    // BPS_Temp_Table_RPA_Report           table_report;
+        #    // BPS_Temp_Table_RPA_Report_Header    table_report_header;
         #}
       ENDSOURCE
       SOURCE #get_table_report
         #[SRSReportDataSetAttribute("table_report")]
         #public BPS_Temp_Table_RPA_Report get_table_report()
         #{
+        #    BPS_Temp_Table_RPA_Report table_report;
         #    select * from table_report;
         #    return table_report;
         #}
@@ -58,6 +61,7 @@ Formatversion: 1
         #[SRSReportDataSetAttribute("table_report_header")]
         #public BPS_Temp_Table_RPA_Report_Header get_table_report_header()
         #{
+        #    BPS_Temp_Table_RPA_Report_Header table_report_header;
         #    select * from table_report_header;
         #    return table_report_header;
         #}
@@ -65,6 +69,95 @@ Formatversion: 1
       SOURCE #processReport
         #public void processReport()
         #{
+        #    BPS_RPA_Report_DC                   contract = this.parmDataContract();
+        #    BPS_Temp_Table_RPA_Report_Header    table_report_header;
+        #
+        #    date                                now = today();
+        #    str                                 now_ID = date2str(now, 123, -1, -1, -1, -1, -1);
+        #
+        #    BPSKmsOrg                           sel_org;
+        #    BPSProgram                          sel_program;
+        #    BPSKegiatan                         sel_kegiatan;
+        #
+        #    KdOrg                               kd_es_1, kd_es_2, kd_es_3;
+        #    Description                         nm_es_1, nm_es_2, nm_es_3;
+        #    BPSPegawai                          pej_es_1, pej_es_2, pej_es_3;
+        #
+        #    // Header
+        #    kd_es_1 = "";
+        #    nm_es_1 = "";
+        #    kd_es_2 = "";
+        #    nm_es_2 = "";
+        #    kd_es_3 = "";
+        #    nm_es_3 = "";
+        #    table_report_header.clear();
+        #
+        #    select sel_org where sel_org.KdOrg == contract.param_kd_org();
+        #    switch (sel_org.Eselon) {
+        #        case 1:
+        #            kd_es_1 = sel_org.KdOrg;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #        case 2:
+        #            kd_es_2 = sel_org.KdOrg;
+        #            nm_es_2 = sel_org.NamaOrg;
+        #            kd_es_1 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_1;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #        case 3:
+        #            kd_es_3 = sel_org.KdOrg;
+        #            nm_es_3 = sel_org.NamaOrg;
+        #            kd_es_2 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_2;
+        #            nm_es_2 = sel_org.NamaOrg;
+        #            kd_es_1 = sel_org.KdOrgParent;
+        #            select sel_org where sel_org.KdOrg == kd_es_1;
+        #            nm_es_1 = sel_org.NamaOrg;
+        #            break;
+        #    }
+        #
+        #    select sel_program where sel_program.KdProgramDJA == contract.param_kd_program();
+        #    select sel_kegiatan where sel_kegiatan.KdKegiatan == contract.param_kd_kegiatan();
+        #    select pej_es_1 where pej_es_1.jab_kdstjab == "4" &&
+        #        !(pej_es_1.stp_kdstpeg like "9*") &&
+        #        pej_es_1.KdOrg == kd_es_1;
+        #    select pej_es_2 where pej_es_2.jab_kdstjab == "4" &&
+        #        !(pej_es_2.stp_kdstpeg like "9*") &&
+        #        pej_es_2.KdOrg == kd_es_2;
+        #    select pej_es_3 where pej_es_3.jab_kdstjab == "4" &&
+        #        !(pej_es_3.stp_kdstpeg like "9*") &&
+        #        pej_es_3.KdOrg == kd_es_3;
+        #
+        #    table_report_header.kd_es_1 = kd_es_1;
+        #    table_report_header.nm_es_1 = nm_es_1;
+        #    table_report_header.nm_pejabat_es_1 = pej_es_1.Nama;
+        #    table_report_header.nip_pejabat_es_1 = pej_es_1.NIPBaru;
+        #    table_report_header.kd_es_2 = kd_es_2;
+        #    table_report_header.nm_es_2 = nm_es_2;
+        #    table_report_header.nm_pejabat_es_2 = pej_es_2.Nama;
+        #    table_report_header.nip_pejabat_es_2 = pej_es_2.NIPBaru;
+        #    table_report_header.kd_es_3 = kd_es_3;
+        #    table_report_header.nm_es_3 = nm_es_3;
+        #    table_report_header.nm_pejabat_es_3 = pej_es_3.Nama;
+        #    table_report_header.nip_pejabat_es_3 = pej_es_3.NIPBaru;
+        #    table_report_header.kd_program = sel_program.KdProgramDJA;
+        #    table_report_header.nm_program = sel_program.nmprogram;
+        #    table_report_header.kd_kegiatan = sel_kegiatan.KdKegiatan;
+        #    table_report_header.nm_kegiatan = sel_kegiatan.NmKegiatan;
+        #    table_report_header.tahun = contract.param_tahun();
+        #    table_report_header.triwulan = contract.param_bulan();
+        #    table_report_header.triwulan_romawi = int2str(contract.param_bulan());
+        #    table_report_header.nm_bln_rpa_1 = int2str(contract.param_bulan());
+        #    table_report_header.nm_bln_rpa_2 = int2str(contract.param_bulan());
+        #    table_report_header.nm_bln_rpa_3 = int2str(contract.param_bulan());
+        #    table_report_header.tanggal_surat = now_ID;
+        #
+        #    table_report_header.insert();
+        #
+        #
+        #
+        #    /**
         #    contract = this.parmDataContract();
         #    select sel_pok where sel_pok.RecId == contract.param_pok_ref_id();
         #
@@ -275,6 +368,7 @@ Formatversion: 1
         #    }
         #
         #    ttsCommit;
+        #    */
         #}
       ENDSOURCE
     ENDMETHODS

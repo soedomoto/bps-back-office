@@ -19,21 +19,80 @@ Formatversion: 1
     ENDPROPERTIES
     
     FIELDS
-      FIELD #pok_ref_id
-        INT64
-        PROPERTIES
-          Name                #pok_ref_id
-          Table               #BPS_Temp_Table_RPA_Param
-          Origin              #{8D08F1CA-3870-478D-9EB9-3C927F9DF44D}
-          ExtendedDataType    #RefRecId
-        ENDPROPERTIES
-        
-      FIELD #triwulan
+      FIELD #bulan
         INT
         PROPERTIES
-          Name                #triwulan
+          Name                #bulan
           Table               #BPS_Temp_Table_RPA_Param
-          Origin              #{95036FE5-994E-4CAF-9D5B-7A2677F04F36}
+          Origin              #{197DCD86-746A-4989-B024-43A0FCDA174D}
+        ENDPROPERTIES
+        
+      FIELD #kd_akun
+        STRING
+        PROPERTIES
+          Name                #kd_akun
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{FD8BC417-E9A8-4D53-80CF-6C2BD71C34B5}
+          ExtendedDataType    #kdAkun
+        ENDPROPERTIES
+        
+      FIELD #kd_kegiatan
+        STRING
+        PROPERTIES
+          Name                #kd_kegiatan
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{F6B63623-1212-4956-88C5-C557C852AE18}
+          ExtendedDataType    #KdKegiatan
+          StringSize          #4
+        ENDPROPERTIES
+        
+      FIELD #kd_komponen
+        STRING
+        PROPERTIES
+          Name                #kd_komponen
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{F4A1B813-1E8F-4DAF-A061-70D573E68644}
+          ExtendedDataType    #KdKomponen
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_organisasi
+        STRING
+        PROPERTIES
+          Name                #kd_organisasi
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{CAFB7F9F-FE9B-4EFC-8CD2-81BEC060E8D9}
+          ExtendedDataType    #KdOrg
+          StringSize          #5
+        ENDPROPERTIES
+        
+      FIELD #kd_output
+        STRING
+        PROPERTIES
+          Name                #kd_output
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{F5F3330E-090E-4DB4-AA79-6578E39A0763}
+          ExtendedDataType    #kdoutput
+          StringSize          #3
+        ENDPROPERTIES
+        
+      FIELD #kd_program
+        STRING
+        PROPERTIES
+          Name                #kd_program
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{CA2934CE-FDB1-4108-972D-D61244FF6F08}
+          ExtendedDataType    #KdProgramDJA
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #tahun
+        INT
+        PROPERTIES
+          Name                #tahun
+          Table               #BPS_Temp_Table_RPA_Param
+          Origin              #{88334E27-1F61-4961-8901-29F60174F99B}
+          ExtendedDataType    #Year
         ENDPROPERTIES
         
     ENDFIELDS

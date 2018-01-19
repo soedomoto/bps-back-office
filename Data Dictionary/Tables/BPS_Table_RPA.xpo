@@ -18,12 +18,123 @@ Formatversion: 1
     ENDPROPERTIES
     
     FIELDS
+      FIELD #approve_es2_by
+        STRING
+        PROPERTIES
+          Name                #approve_es2_by
+          Table               #BPS_Table_RPA
+          Origin              #{0BAD42AF-AFCA-4A04-85FF-FE1B3D9B40D0}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #approve_es2_date
+        DATE
+        PROPERTIES
+          Name                #approve_es2_date
+          Table               #BPS_Table_RPA
+          Origin              #{81416202-2E8D-45DD-A618-77ECC458AF84}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #approve_ppk_by
+        STRING
+        PROPERTIES
+          Name                #approve_ppk_by
+          Table               #BPS_Table_RPA
+          Origin              #{8B34F026-D4F1-48DB-BBC6-1E5B508E4382}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #approve_ppk_date
+        DATE
+        PROPERTIES
+          Name                #approve_ppk_date
+          Table               #BPS_Table_RPA
+          Origin              #{00F02ECC-EEF0-42DD-B0BF-B67D400A4E3D}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
       FIELD #bulan
         INT
         PROPERTIES
           Name                #bulan
           Table               #BPS_Table_RPA
           Origin              #{37C0A368-87F7-4E43-895F-7C1800F5A61C}
+        ENDPROPERTIES
+        
+      FIELD #decline_es2_by
+        STRING
+        PROPERTIES
+          Name                #decline_es2_by
+          Table               #BPS_Table_RPA
+          Origin              #{CA4E7C55-045D-4503-8DD5-62D60B13E84F}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #decline_es2_date
+        DATE
+        PROPERTIES
+          Name                #decline_es2_date
+          Table               #BPS_Table_RPA
+          Origin              #{4D6D8C1B-C516-45AA-B43E-2C9EF156D6DF}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #decline_es2_reason
+        STRING
+        PROPERTIES
+          Name                #decline_es2_reason
+          Table               #BPS_Table_RPA
+          Origin              #{25D1EFB9-765C-4E37-B134-5F53E4571416}
+        ENDPROPERTIES
+        
+      FIELD #decline_ppk_by
+        STRING
+        PROPERTIES
+          Name                #decline_ppk_by
+          Table               #BPS_Table_RPA
+          Origin              #{7F3925FE-17EB-42F5-827B-91FE099168FB}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #decline_ppk_date
+        DATE
+        PROPERTIES
+          Name                #decline_ppk_date
+          Table               #BPS_Table_RPA
+          Origin              #{186AC37B-C292-445E-9324-F21D809CD217}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
+      FIELD #decline_ppk_reason
+        STRING
+        PROPERTIES
+          Name                #decline_ppk_reason
+          Table               #BPS_Table_RPA
+          Origin              #{9BC35C3D-284A-400F-865A-8EF3053C137F}
+        ENDPROPERTIES
+        
+      FIELD #entry_by
+        STRING
+        PROPERTIES
+          Name                #entry_by
+          Table               #BPS_Table_RPA
+          Origin              #{444FCF6A-E8BF-48E4-B6AE-6B5D4C80BC2D}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #entry_date
+        DATE
+        PROPERTIES
+          Name                #entry_date
+          Table               #BPS_Table_RPA
+          Origin              #{5811BF3C-D4A0-4B67-AFCD-8C77E2094ACC}
+          ExtendedDataType    #dateDDMMYYYY
         ENDPROPERTIES
         
       FIELD #item_detail
@@ -34,6 +145,15 @@ Formatversion: 1
           Origin              #{566AA018-C29D-44BC-A8A2-17D0808E9EA9}
           ExtendedDataType    #Description
           StringSize          #600
+        ENDPROPERTIES
+        
+      FIELD #jenis_pencairan
+        ENUM
+        PROPERTIES
+          Name                #jenis_pencairan
+          Table               #BPS_Table_RPA
+          Origin              #{C566876F-A8E7-4297-87B9-8A8418EA907E}
+          EnumType            #jnsPencairan
         ENDPROPERTIES
         
       FIELD #kd_akun
@@ -143,26 +263,6 @@ Formatversion: 1
           Origin              #{D962CD5C-2B51-46E1-9652-5F8CC99F93CA}
         ENDPROPERTIES
         
-      FIELD #peg_entri
-        STRING
-        PROPERTIES
-          Name                #peg_entri
-          Table               #BPS_Table_RPA
-          Origin              #{444FCF6A-E8BF-48E4-B6AE-6B5D4C80BC2D}
-          ExtendedDataType    #NIPBPS
-          StringSize          #9
-        ENDPROPERTIES
-        
-      FIELD #peg_submit
-        STRING
-        PROPERTIES
-          Name                #peg_submit
-          Table               #BPS_Table_RPA
-          Origin              #{D9786C26-C78E-42AD-93CD-1830480115B7}
-          ExtendedDataType    #NIPBPS
-          StringSize          #9
-        ENDPROPERTIES
-        
       FIELD #rpa_bln_1
         REAL
         PROPERTIES
@@ -259,6 +359,25 @@ Formatversion: 1
           Origin              #{C374D033-1150-4A5B-B793-C2A2E39193D2}
         ENDPROPERTIES
         
+      FIELD #submit_by
+        STRING
+        PROPERTIES
+          Name                #submit_by
+          Table               #BPS_Table_RPA
+          Origin              #{D9786C26-C78E-42AD-93CD-1830480115B7}
+          ExtendedDataType    #NIPBPS
+          StringSize          #9
+        ENDPROPERTIES
+        
+      FIELD #submit_date
+        DATE
+        PROPERTIES
+          Name                #submit_date
+          Table               #BPS_Table_RPA
+          Origin              #{656190B3-944B-498B-ADD6-8ECC1C511FF2}
+          ExtendedDataType    #dateDDMMYYYY
+        ENDPROPERTIES
+        
       FIELD #tahun
         INT
         PROPERTIES
@@ -266,42 +385,6 @@ Formatversion: 1
           Table               #BPS_Table_RPA
           Origin              #{1753ACC1-188B-405E-AA19-BBEB13D1834F}
           ExtendedDataType    #Year
-        ENDPROPERTIES
-        
-      FIELD #tgl_entri
-        DATE
-        PROPERTIES
-          Name                #tgl_entri
-          Table               #BPS_Table_RPA
-          Origin              #{5811BF3C-D4A0-4B67-AFCD-8C77E2094ACC}
-          ExtendedDataType    #dateDDMMYYYY
-        ENDPROPERTIES
-        
-      FIELD #tgl_es2_setuju
-        DATE
-        PROPERTIES
-          Name                #tgl_es2_setuju
-          Table               #BPS_Table_RPA
-          Origin              #{81416202-2E8D-45DD-A618-77ECC458AF84}
-          ExtendedDataType    #dateDDMMYYYY
-        ENDPROPERTIES
-        
-      FIELD #tgl_ppk_setuju
-        DATE
-        PROPERTIES
-          Name                #tgl_ppk_setuju
-          Table               #BPS_Table_RPA
-          Origin              #{00F02ECC-EEF0-42DD-B0BF-B67D400A4E3D}
-          ExtendedDataType    #dateDDMMYYYY
-        ENDPROPERTIES
-        
-      FIELD #tgl_submit
-        DATE
-        PROPERTIES
-          Name                #tgl_submit
-          Table               #BPS_Table_RPA
-          Origin              #{656190B3-944B-498B-ADD6-8ECC1C511FF2}
-          ExtendedDataType    #dateDDMMYYYY
         ENDPROPERTIES
         
     ENDFIELDS
@@ -349,13 +432,25 @@ Formatversion: 1
         #{
         #    Str60 notes = "Belum Dientri";
         #
-        #    if (this.tgl_entri) {
+        #    if (!this.is_blank()) {
         #        if (this.is_exceeded()) {
         #            notes = "RPA melebihi pagu sisa";
         #        } else if (! this.is_optimal()) {
         #            notes = "Masih ada sisa pagu";
+        #        } else if (this.is_submitted()) {
+        #            notes = "Telah disubmit";
         #        } else {
         #            notes = "OK";
+        #        }
+        #
+        #        if (this.is_approved_by_es_2()) {
+        #            notes = "Disetujui oleh Eselon II";
+        #        } else if (this.is_approved_by_ppk()) {
+        #            notes = "Disetujui oleh PPK";
+        #        } else if (this.is_declined_by_es_2()) {
+        #            notes = "Ditolak oleh Eselon II";
+        #        } else if (this.is_declined_by_ppk()) {
+        #            notes = "Ditolak oleh PPK";
         #        }
         #    }
         #
@@ -365,7 +460,7 @@ Formatversion: 1
       SOURCE #is_approved_by_es_2
         #display boolean is_approved_by_es_2()
         #{
-        #    if (this.tgl_es2_setuju) {
+        #    if (this.approve_es2_date && this.approve_es2_by) {
         #        return true;
         #    }
         #
@@ -375,7 +470,37 @@ Formatversion: 1
       SOURCE #is_approved_by_ppk
         #display boolean is_approved_by_ppk()
         #{
-        #    if (this.tgl_ppk_setuju) {
+        #    if (this.approve_ppk_date && this.approve_ppk_by) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_blank
+        #display boolean is_blank()
+        #{
+        #    if (this.entry_date) {
+        #        return false;
+        #    }
+        #
+        #    return true;
+        #}
+      ENDSOURCE
+      SOURCE #is_declined_by_es_2
+        #display boolean is_declined_by_es_2()
+        #{
+        #    if (this.decline_es2_date && this.decline_es2_by) {
+        #        return true;
+        #    }
+        #
+        #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_declined_by_ppk
+        #display boolean is_declined_by_ppk()
+        #{
+        #    if (this.decline_ppk_by && this.decline_ppk_date) {
         #        return true;
         #    }
         #
@@ -385,7 +510,7 @@ Formatversion: 1
       SOURCE #is_editable
         #display boolean is_editable()
         #{
-        #    if (this.tgl_ppk_setuju || this.tgl_es2_setuju) {
+        #    if (this.is_approved_by_ppk() || this.is_approved_by_es_2()) {
         #        return false;
         #    }
         #
@@ -410,6 +535,16 @@ Formatversion: 1
         #    }
         #
         #    return false;
+        #}
+      ENDSOURCE
+      SOURCE #is_submitted
+        #display boolean is_submitted()
+        #{
+        #    if (this.submit_by && this.submit_date) {
+        #        return true;
+        #    } else {
+        #        return false;
+        #    }
         #}
       ENDSOURCE
     ENDMETHODS

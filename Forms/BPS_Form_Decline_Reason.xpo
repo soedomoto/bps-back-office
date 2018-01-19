@@ -1,0 +1,181 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: FRM
+
+; 
+; --------------------------------------------------------------------------------
+FRMVERSION 12
+
+FORM #BPS_Form_Decline_Reason
+  PROPERTIES
+    Name                #BPS_Form_Decline_Reason
+    Origin              #{0B7EEA06-7ED7-4748-A4B9-EF42F9AFF664}
+  ENDPROPERTIES
+  
+  METHODS
+    SOURCE #classDeclaration
+      #public class FormRun extends ObjectRun
+      #{
+      #    Object          caller;
+      #    SysSetupFormRun formRun;
+      #    BPS_Table_RPA   rpa;
+      #}
+    ENDSOURCE
+    SOURCE #close
+      #public void close()
+      #{
+      #    super();
+      #
+      #    caller.declined_by_es2(rpa, txt_reason.text());
+      #}
+    ENDSOURCE
+    SOURCE #init
+      #public void init()
+      #{
+      #    super();
+      #
+      #    caller= this.args().caller();
+      #    rpa = this.args().record();
+      #    if(caller) {
+      #        formRun = caller;
+      #        if (formRun.pageInteraction()) {
+      #            caller = formRun.pageInteraction();
+      #        }
+      #    }
+      #}
+    ENDSOURCE
+  ENDMETHODS
+  OBJECTBANK
+    PROPERTIES
+    ENDPROPERTIES
+    
+  ENDOBJECTBANK
+  
+  REFERENCEDATASOURCES
+  ENDREFERENCEDATASOURCES
+  
+  JOINS
+  ENDJOINS
+  
+  PARTREFERENCES
+  ENDPARTREFERENCES
+  
+  DESIGN
+    PROPERTIES
+    ENDPROPERTIES
+    
+    CONTAINER
+      CONTROL GROUP
+        PROPERTIES
+          Name                #Group
+          Width               #Column width
+          Height              #150
+          ElementPosition     #1073741823
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #txt_reason
+          AutoDeclaration     #Yes
+          Width               #Column width
+          Height              #150
+          ElementPosition     #1431655764
+          HierarchyParent     #Group
+          Label               #Alasan
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+    ENDCONTAINER
+    
+  ENDDESIGN
+  
+  PERMISSIONS #Permissions
+    PROPERTIES
+    ENDPROPERTIES
+    
+    PERMISSIONSET #Read
+      PROPERTIES
+      ENDPROPERTIES
+      
+      FORM #Controls
+      ENDFORM
+      
+    TABLES #Tables
+    ENDTABLES
+    
+  SERVERMETHODS #Server Methods
+  ENDSERVERMETHODS
+  
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Update
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Create
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Delete
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+ENDPERMISSIONS
+
+ENDFORM
+
+
+***Element: END

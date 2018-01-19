@@ -18,24 +18,77 @@ Formatversion: 1
         #[DataContractAttribute]
         #class BPS_RPA_Report_DC
         #{
-        #    RefRecId    pok_ref_id;
-        #    int         triwulan;
+        #    int             tahun, bulan;
+        #    KdOrg           kd_org;
+        #    KdProgramDJA    kd_program;
+        #    KdKegiatan      kd_kegiatan;
+        #    kdoutput        kd_output;
+        #    KdKomponen      kd_komponen;
+        #    kdAkun          kd_akun;
         #}
       ENDSOURCE
-      SOURCE #param_pok_ref_id
-        #[DataMemberAttribute("pok_ref_id")]
-        #public RefRecId param_pok_ref_id(RefRecId _pok_ref_id = pok_ref_id)
+      SOURCE #param_bulan
+        #[DataMemberAttribute("bulan")]
+        #public int param_bulan(int _bulan = bulan)
         #{
-        #    pok_ref_id = _pok_ref_id;
-        #    return pok_ref_id;
+        #    bulan = _bulan;
+        #    return bulan;
         #}
       ENDSOURCE
-      SOURCE #param_triwulan
-        #[DataMemberAttribute("triwulan")]
-        #public int param_triwulan(int _triwulan = triwulan)
+      SOURCE #param_kd_akun
+        #[DataMemberAttribute("kd_akun")]
+        #public kdAkun param_kd_akun(kdAkun _kd_akun = kd_akun)
         #{
-        #    triwulan = _triwulan;
-        #    return triwulan;
+        #    kd_akun = _kd_akun;
+        #    return kd_akun;
+        #}
+      ENDSOURCE
+      SOURCE #param_kd_kegiatan
+        #[DataMemberAttribute("kd_kegiatan")]
+        #public KdKegiatan param_kd_kegiatan(KdKegiatan _kd_kegiatan = kd_kegiatan)
+        #{
+        #    kd_kegiatan = _kd_kegiatan;
+        #    return kd_kegiatan;
+        #}
+      ENDSOURCE
+      SOURCE #param_kd_komponen
+        #[DataMemberAttribute("kd_komponen")]
+        #public KdKomponen param_kd_komponen(KdKomponen _kd_komponen = kd_komponen)
+        #{
+        #    kd_komponen = _kd_komponen;
+        #    return kd_komponen;
+        #}
+      ENDSOURCE
+      SOURCE #param_kd_org
+        #[DataMemberAttribute("kd_org")]
+        #public KdOrg param_kd_org(KdOrg _kd_org = kd_org)
+        #{
+        #    kd_org = _kd_org;
+        #    return kd_org;
+        #}
+      ENDSOURCE
+      SOURCE #param_kd_output
+        #[DataMemberAttribute("kd_output")]
+        #public kdoutput param_kd_output(kdoutput _kd_output = kd_output)
+        #{
+        #    kd_output = _kd_output;
+        #    return kd_output;
+        #}
+      ENDSOURCE
+      SOURCE #param_kd_program
+        #[DataMemberAttribute("kd_program")]
+        #public KdProgramDJA param_kd_program(KdProgramDJA _kd_program = kd_program)
+        #{
+        #    kd_program = _kd_program;
+        #    return kd_program;
+        #}
+      ENDSOURCE
+      SOURCE #param_tahun
+        #[DataMemberAttribute("tahun")]
+        #public int param_tahun(int _tahun = tahun)
+        #{
+        #    tahun = _tahun;
+        #    return tahun;
         #}
       ENDSOURCE
     ENDMETHODS

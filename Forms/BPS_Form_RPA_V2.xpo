@@ -17,8 +17,8 @@ FORM #BPS_Form_RPA_V2
     SOURCE #classDeclaration
       #public class FormRun extends ObjectRun
       #{
-      #    UserId          user_id;
-      #    HakAkses        user_role;
+      #    // UserId          user_id;
+      #    // HakAkses        user_role;
       #
       #    BPSUserDetail   table_user;
       #    BPSFlagOrg      table_flag_org;
@@ -42,7 +42,7 @@ FORM #BPS_Form_RPA_V2
       #    //KdSubOutput   KdSubOutput;
       #    //KdSubKomponen KdSubKomponen;
       #
-      #    int             red_color;
+      #    // int             red_color;
       #}
     ENDSOURCE
     SOURCE #create_blank_rpa_monthly
@@ -102,32 +102,67 @@ FORM #BPS_Form_RPA_V2
       #    }
       #}
     ENDSOURCE
+    SOURCE #declined_by_es2
+      #public void declined_by_es2(BPS_Table_RPA curr_rpa, str reason)
+      #{
+      #    BPS_Table_RPA tmp_rpa, tmp_rpa_update;
+      #
+      #    if (curr_rpa) {
+      #        curr_rpa.decline_es2_date = today();
+      #        curr_rpa.decline_es2_by = table_user.NIPBPS;
+      #        curr_rpa.decline_es2_reason = reason;
+      #        curr_rpa.update();
+      #    } else {
+      #        ttsBegin;
+      #        while select tmp_rpa where tmp_rpa.tahun == tahun &&
+      #        tmp_rpa.bulan == bulan && tmp_rpa.kd_organisasi == kd_org {
+      #            select forUpdate tmp_rpa_update where
+      #            tmp_rpa_update.RecId == tmp_rpa.RecId;
+      #
+      #            tmp_rpa_update.decline_es2_date = today();
+      #            tmp_rpa_update.decline_es2_by = table_user.NIPBPS;
+      #            tmp_rpa_update.decline_es2_reason = reason;
+      #            tmp_rpa_update.update();
+      #        }
+      #        ttsCommit;
+      #    }
+      #}
+    ENDSOURCE
+    SOURCE #get_current_user
+      #public BPSUserDetail get_current_user()
+      #{
+      #    UserId uid;
+      #    BPSUserDetail t_user;
+      #
+      #    uid = curUserId();
+      #    select t_user where t_user.UserId == uid;
+      #
+      #    return t_user;
+      #}
+    ENDSOURCE
     SOURCE #init
       #public void init()
       #{
+      #    BPSUserDetail user;
+      #
       #    super();
       #
       #    bulan = 1;
-      #    red_color = WinApi::RGB2int(255,0,0);
+      #    user = element.get_current_user();
       #
-      #    // Default user
-      #    user_id = curUserId();
-      #    select table_user where table_user.UserId == user_id;
-      #    user_role = table_user.HakAkses;
-      #
-      #    access_right_info.text("Anda terdaftar sebagai " + table_user.UserId +
-      #        " dengan hak akses " + enum2Value(table_user.HakAkses));
+      #    access_right_info.text("Anda terdaftar sebagai " + user.UserId +
+      #        " dengan hak akses " + enum2Value(user.HakAkses));
       #
       #    // Disable approval button
-      #    if (user_role != HakAkses::Eselon2) {
+      #    if (! element.is_eselon_2()) {
       #        BG_Es_2.visible(false);
       #    }
       #
-      #    if (user_role != HakAkses::PPK) {
+      #    if (! element.is_ppk()) {
       #        BG_PPK.visible(false);
       #    }
       #
-      #    if (user_role != HakAkses::Pengentri) {
+      #    if (! element.is_operator()) {
       #        BG_Es_Operator.visible(false);
       #        BG_Form_Report.visible(false);
       #    }
@@ -146,25 +181,81 @@ FORM #BPS_Form_RPA_V2
       #    }
       #}
     ENDSOURCE
+    SOURCE #is_eselon_2
+      #public boolean is_eselon_2()
+      #{
+      #    BPSUserDetail user = element.get_current_user();
+      #    if (user.HakAkses == HakAkses::Eselon2) {
+      #        return true;
+      #    }
+      #
+      #    return false;
+      #}
+    ENDSOURCE
+    SOURCE #is_operator
+      #public boolean is_operator()
+      #{
+      #    BPSUserDetail user = element.get_current_user();
+      #    if (user.HakAkses == HakAkses::Pengentri) {
+      #        return true;
+      #    }
+      #
+      #    return false;
+      #}
+    ENDSOURCE
+    SOURCE #is_ppk
+      #public boolean is_ppk()
+      #{
+      #    BPSUserDetail user = element.get_current_user();
+      #    if (user.HakAkses == HakAkses::PPK) {
+      #        return true;
+      #    }
+      #
+      #    return false;
+      #}
+    ENDSOURCE
     SOURCE #record_modified
       #public void record_modified()
       #{
-      #    BPS_Table_RPA.tgl_entri = today();
-      #    BPS_Table_RPA.peg_entri = table_user.NIPBPS;
+      #    BPS_Table_RPA.entry_date = today();
+      #    BPS_Table_RPA.entry_by = table_user.NIPBPS;
       #    BPS_Table_RPA.update();
       #}
     ENDSOURCE
-    SOURCE #refresh
-      #public void refresh()
+    SOURCE #refresh_table_rpa
+      #public void refresh_table_rpa()
       #{
-      #    /*
       #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
-      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, tahun)).value(int2str(BPSEntriPembiayaanPusat.Tahun));
-      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+      #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+      #    if (kd_program) BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+      #    if (kd_kegiatan) BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
+      #    if (kd_output) BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
+      #    if (kd_komponen) BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
+      #    if (kd_akun) BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_akun)).value(kd_akun);
+      #
+      #    if (element.is_eselon_2()) {
+      #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, submit_date))
+      #        .value(sysquery::valueNotEmptyString());
+      #    }
+      #
+      #    if (element.is_ppk()) {
+      #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, approve_es2_date))
+      #        .value(sysquery::valueNotEmptyString());
+      #    }
+      #
       #    BPS_Table_RPA_ds.executeQuery();
       #    BPS_Table_RPA_ds.refresh();
-      #    */
+      #}
+    ENDSOURCE
+    SOURCE #run
+      #public void run()
+      #{
+      #    super();
+      #
+      #    WINAPI::FORCEMAXIMIZEWINDOW(element.hWnd());
       #}
     ENDSOURCE
   ENDMETHODS
@@ -186,21 +277,7 @@ FORM #BPS_Form_RPA_V2
         SOURCE #active
           #public int active()
           #{
-          #    if (BPS_Table_RPA.is_approved_by_es_2() ||
-          #    BPS_Table_RPA.is_approved_by_ppk()) {
-          #        txt_rpa_bln_1.allowEdit(false);
-          #        txt_rpa_bln_2.allowEdit(false);
-          #        txt_rpa_bln_3.allowEdit(false);
-          #        txt_rpa_bln_4.allowEdit(false);
-          #        txt_rpa_bln_5.allowEdit(false);
-          #        txt_rpa_bln_6.allowEdit(false);
-          #        txt_rpa_bln_7.allowEdit(false);
-          #        txt_rpa_bln_8.allowEdit(false);
-          #        txt_rpa_bln_9.allowEdit(false);
-          #        txt_rpa_bln_10.allowEdit(false);
-          #        txt_rpa_bln_11.allowEdit(false);
-          #        txt_rpa_bln_12.allowEdit(false);
-          #    } else {
+          #    if (BPS_Table_RPA.is_editable() && element.is_operator()) {
           #        txt_rpa_bln_1.allowEdit(true);
           #        txt_rpa_bln_2.allowEdit(true);
           #        txt_rpa_bln_3.allowEdit(true);
@@ -213,6 +290,19 @@ FORM #BPS_Form_RPA_V2
           #        txt_rpa_bln_10.allowEdit(true);
           #        txt_rpa_bln_11.allowEdit(true);
           #        txt_rpa_bln_12.allowEdit(true);
+          #    } else {
+          #        txt_rpa_bln_1.allowEdit(false);
+          #        txt_rpa_bln_2.allowEdit(false);
+          #        txt_rpa_bln_3.allowEdit(false);
+          #        txt_rpa_bln_4.allowEdit(false);
+          #        txt_rpa_bln_5.allowEdit(false);
+          #        txt_rpa_bln_6.allowEdit(false);
+          #        txt_rpa_bln_7.allowEdit(false);
+          #        txt_rpa_bln_8.allowEdit(false);
+          #        txt_rpa_bln_9.allowEdit(false);
+          #        txt_rpa_bln_10.allowEdit(false);
+          #        txt_rpa_bln_11.allowEdit(false);
+          #        txt_rpa_bln_12.allowEdit(false);
           #    }
           #
           #    return super();
@@ -223,7 +313,7 @@ FORM #BPS_Form_RPA_V2
           #{
           #    BPS_Table_RPA rpa_rec = _record;
           #
-          #    if (rpa_rec.tgl_entri) {
+          #    if (! rpa_rec.is_blank() && element.is_operator()) {
           #        if (rpa_rec.is_exceeded()) {
           #            _options.backColor(16711935);
           #        } else if (! rpa_rec.is_optimal()) {
@@ -231,6 +321,14 @@ FORM #BPS_Form_RPA_V2
           #        } else {
           #            _options.backColor(65280);
           #        }
+          #    }
+          #
+          #    if (element.is_eselon_2() && rpa_rec.is_approved_by_es_2()) {
+          #        _options.backColor(65280);
+          #    }
+          #
+          #    if (element.is_ppk() && rpa_rec.is_approved_by_ppk()) {
+          #        _options.backColor(65280);
           #    }
           #
           #    super(_record, _options);
@@ -309,6 +407,7 @@ FORM #BPS_Form_RPA_V2
         PROPERTIES
           Name                #BG_Form_Report
           AutoDeclaration     #Yes
+          Visible             #No
           Left                #Auto (left)
           ElementPosition     #1789569705
           HierarchyParent     #ActionPaneTab
@@ -549,6 +648,19 @@ FORM #BPS_Form_RPA_V2
         ENDMETHODS
       ENDCONTROL 
       
+      CONTROL COMBOBOX
+        PROPERTIES
+          Name                #cmb_jenis_pencairan
+          ElementPosition     #1932735262
+          HierarchyParent     #GridPOK
+          DataSource          #BPS_Table_RPA
+          DataField           #jenis_pencairan
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
       CONTROL COMMANDBUTTON
         PROPERTIES
           Name                #btn_rpa_approve_es_2
@@ -565,7 +677,8 @@ FORM #BPS_Form_RPA_V2
             #{
             #    super();
             #
-            #    BPS_Table_RPA.tgl_es2_setuju = today();
+            #    BPS_Table_RPA.approve_es2_date = today();
+            #    BPS_Table_RPA.approve_es2_by = table_user.NIPBPS;
             #    BPS_Table_RPA.update();
             #}
           ENDSOURCE
@@ -588,8 +701,39 @@ FORM #BPS_Form_RPA_V2
             #{
             #    super();
             #
-            #    BPS_Table_RPA.tgl_ppk_setuju = today();
+            #    BPS_Table_RPA.approve_ppk_date = today();
+            #    BPS_Table_RPA.approve_ppk_by = table_user.NIPBPS;
             #    BPS_Table_RPA.update();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_decline_all_es_2
+          ElementPosition     #1879048189
+          HierarchyParent     #BG_Es_2
+          Text                #Tolak Semua
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    FormRun fr;
+            #    Args form_args;
+            #
+            #    super();
+            #
+            #    form_args = new Args();
+            #    form_args.name(formStr('BPS_Form_Decline_Reason'));
+            #    form_args.caller(element);
+            #
+            #    fr = ClassFactory.formRunClass(form_args);
+            #    fr.init();
+            #    fr.run();
+            #    fr.detach();
             #}
           ENDSOURCE
         ENDMETHODS
@@ -607,7 +751,20 @@ FORM #BPS_Form_RPA_V2
           SOURCE #clicked
             #void clicked()
             #{
+            #    FormRun fr;
+            #    Args form_args;
+            #
             #    super();
+            #
+            #    form_args = new Args();
+            #    form_args.name(formStr('BPS_Form_Decline_Reason'));
+            #    form_args.record(BPS_Table_RPA);
+            #    form_args.caller(element);
+            #
+            #    fr = ClassFactory.formRunClass(form_args);
+            #    fr.init();
+            #    fr.run();
+            #    fr.detach();
             #}
           ENDSOURCE
         ENDMETHODS
@@ -626,6 +783,45 @@ FORM #BPS_Form_RPA_V2
             #void clicked()
             #{
             #    super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_form_monthly
+          AutoDeclaration     #Yes
+          ElementPosition     #1968526675
+          HierarchyParent     #BG_Form_Report
+          Text                #Cetak Form Tw IV
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #/**
+            #    Args                        args;
+            #    BPS_RPA_Report_RC           rc;
+            #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+            #
+            #    super();
+            #
+            #    tmp_tbl_param.pok_ref_id = BPSEntriPembiayaanPusat.RecId;
+            #    tmp_tbl_param.triwulan = 4;
+            #    tmp_tbl_param.write();
+            #
+            #    args = new Args();
+            #    args.record(tmp_tbl_param);
+            #
+            #    rc = new BPS_RPA_Report_RC();
+            #    rc.parmLoadFromSysLastValue(false);
+            #    rc.parmArgs(args);
+            #    rc.parmReportName(ssrsReportStr(BPS_Report_Form_RPA_Triwulanan, Default_Design));
+            #    rc.parmShowDialog(false);
+            #    rc.startOperation();
+            #*/
             #}
           ENDSOURCE
         ENDMETHODS
@@ -813,7 +1009,7 @@ FORM #BPS_Form_RPA_V2
             #    while select rpa where rpa.tahun == tahun &&
             #    rpa.bulan == bulan && rpa.kd_organisasi == kd_org {
             #        id = rpa.get_group_pok();
-            #        if (! rpa.tgl_entri) {
+            #        if (! rpa.entry_date) {
             #            blank_items.value(k, id);
             #            k++;
             #        } else if (rpa.is_exceeded()) {
@@ -836,8 +1032,8 @@ FORM #BPS_Form_RPA_V2
             #    } else {
             #        while select rpa where rpa.tahun == tahun &&
             #        rpa.bulan == bulan && rpa.kd_organisasi == kd_org {
-            #            rpa.tgl_submit = today();
-            #            rpa.peg_submit = table_user.NIPBPS;
+            #            rpa.submit_date = today();
+            #            rpa.submit_by = table_user.NIPBPS;
             #            rpa.update();
             #        }
             #
@@ -1670,23 +1866,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_nama_akun.visible(true);
             #    txt_nama_akun.text(table_akun.NmAkun);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    if(subStr(kd_org, 3, 3)=="000") {
-            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(subStr(kd_org, 1, 2) + "*");
-            #    } else {
-            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    }
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,flagterpakai)).value(enum2str(YaTidak::Ya));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_akun)).value(kd_akun);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
@@ -1762,15 +1942,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_nama_kegiatan.text(table_kegiatan.NmKegiatan);
             #    txt_nama_kegiatan.visible(true);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
@@ -1831,15 +2003,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_nama_komponen.text(table_komponen.NmKomponen);
             #    txt_nama_komponen.visible(true);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
@@ -1910,13 +2074,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_kode_org.text(table_kms.NamaOrg);
             #    txt_kode_org.visible(true);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
@@ -1992,16 +2150,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_nama_output.text(table_output.NmOutput);
             #    txt_nama_output.visible(true);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
@@ -2077,14 +2226,7 @@ FORM #BPS_Form_RPA_V2
             #    txt_nama_program.text(table_program.NmProgram);
             #    txt_nama_program.visible(true);
             #
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
-            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
-            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
-            #    BPS_Table_RPA_ds.executeQuery();
-            #    BPS_Table_RPA_ds.refresh();
+            #    element.refresh_table_rpa();
             #
             #    return super();
             #}
