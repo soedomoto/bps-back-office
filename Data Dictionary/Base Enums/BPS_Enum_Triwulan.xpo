@@ -1,0 +1,50 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBE
+
+; 
+; --------------------------------------------------------------------------------
+  ENUMTYPEVERSION 1
+  
+  ENUMTYPE #BPS_Enum_Triwulan
+    PROPERTIES
+      Name                #BPS_Enum_Triwulan
+      UseEnumValue        #Yes
+      Origin              #{B96199D5-532F-4328-842C-9E5CB2A7EC37}
+    ENDPROPERTIES
+    
+    TYPEELEMENTS
+      #I
+      PROPERTIES
+        Name                #I
+        Label               #Element1
+        EnumValue           #0
+      ENDPROPERTIES
+      
+      #II
+      PROPERTIES
+        Name                #II
+        Label               #Element1
+        EnumValue           #1
+      ENDPROPERTIES
+      
+      #III
+      PROPERTIES
+        Name                #III
+        Label               #Element1
+        EnumValue           #2
+      ENDPROPERTIES
+      
+      #IV
+      PROPERTIES
+        Name                #IV
+        Label               #Element1
+        EnumValue           #3
+      ENDPROPERTIES
+      
+    ENDTYPEELEMENTS
+  ENDENUMTYPE
+  
+
+***Element: END

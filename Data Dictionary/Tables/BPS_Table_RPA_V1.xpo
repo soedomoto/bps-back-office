@@ -1,0 +1,137 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: DBT
+
+; 
+; --------------------------------------------------------------------------------
+  TABLEVERSION 1
+  
+  TABLE #BPS_Table_RPA_V1
+    EnforceFKRelation 1
+    PROPERTIES
+      Name                #BPS_Table_RPA_V1
+      CreateRecIdIndex    #Yes
+      PrimaryIndex        #SurrogateKey
+      ClusterIndex        #SurrogateKey
+      Origin              #{DD97B6AC-E124-44E0-92C0-4DE6713938B5}
+    ENDPROPERTIES
+    
+    FIELDS
+      FIELD #ApprovalStatus
+        ENUM
+        PROPERTIES
+          Name                #ApprovalStatus
+          Table               #BPS_Table_RPA_V1
+          Origin              #{D02DDA02-073C-4A39-8BEA-CBA7116D4DC0}
+          EnumType            #StatusUsulanCP
+        ENDPROPERTIES
+        
+      FIELD #Bulan
+        ENUM
+        PROPERTIES
+          Name                #Bulan
+          Table               #BPS_Table_RPA_V1
+          Origin              #{44356AF4-BFFF-4DEC-961F-41505782CDA1}
+          EnumType            #Bulan
+        ENDPROPERTIES
+        
+      FIELD #EntriPembiayaanPusatRecId
+        INT64
+        PROPERTIES
+          Name                #EntriPembiayaanPusatRecId
+          Table               #BPS_Table_RPA_V1
+          Origin              #{11414186-9973-4921-A77B-C3E385A91A27}
+          ExtendedDataType    #RefRecId
+        ENDPROPERTIES
+        
+      FIELD #RevisedByRecId
+        INT64
+        PROPERTIES
+          Name                #RevisedByRecId
+          Table               #BPS_Table_RPA_V1
+          Origin              #{D07C514E-B58A-4EBA-842D-C69CE6919A8C}
+          ExtendedDataType    #RefRecId
+        ENDPROPERTIES
+        
+      FIELD #RevisionNo
+        INT
+        PROPERTIES
+          Name                #RevisionNo
+          Table               #BPS_Table_RPA_V1
+          Origin              #{6F828D65-C059-4930-9B6E-69A1FA1EC832}
+        ENDPROPERTIES
+        
+      FIELD #RPA
+        REAL
+        PROPERTIES
+          Name                #RPA
+          Table               #BPS_Table_RPA_V1
+          Origin              #{FC4B0AE1-050B-4ABC-A220-68AD13ED7934}
+        ENDPROPERTIES
+        
+      FIELD #Tahun
+        INT
+        PROPERTIES
+          Name                #Tahun
+          Label               #Tahun Anggaran
+          Table               #BPS_Table_RPA_V1
+          Origin              #{882BCD2D-3516-4A0E-85DE-315454B4E662}
+          ExtendedDataType    #Year
+        ENDPROPERTIES
+        
+    ENDFIELDS
+    GROUPS
+    ENDGROUPS
+    
+    INDICES
+      #BPSRPAIdx
+      PROPERTIES
+        Name                #BPSRPAIdx
+        AllowDuplicates     #No
+        Origin              #{6B7C1BC2-315D-4651-9323-803BD0DBF3AE}
+      ENDPROPERTIES
+      
+      INDEXFIELDS
+        #RevisionNo
+        #EntriPembiayaanPusatRecId
+        #Bulan
+      ENDINDEXFIELDS
+      
+    ENDINDICES
+    FULLTEXTINDICES
+    ENDFULLTEXTINDICES
+    REFERENCES
+      REFERENCE #BPSEntriPembiayaanPusat
+        PROPERTIES
+          Name                #BPSEntriPembiayaanPusat
+          Table               #BPSEntriPembiayaanPusat
+          UseDefaultRoleNames #Yes
+        ENDPROPERTIES
+        
+        FIELDREFERENCES
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #Tahun
+            RelatedField        #Tahun
+          ENDPROPERTIES
+          
+          REFERENCETYPE NORMAL
+          PROPERTIES
+            Field               #EntriPembiayaanPusatRecId
+            RelatedField        #RecId
+          ENDPROPERTIES
+          
+        ENDFIELDREFERENCES
+      ENDREFERENCE
+    ENDREFERENCES
+    
+    DELETEACTIONS
+    ENDDELETEACTIONS
+    
+    METHODS
+    ENDMETHODS
+  ENDTABLE
+  
+
+***Element: END

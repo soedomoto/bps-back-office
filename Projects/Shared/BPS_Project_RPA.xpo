@@ -55,6 +55,18 @@ Formatversion: 1
         FILETYPE 0
         UTILTYPE 11
         NODETYPE 201
+        NAME #BPS_Form_Decline_Reason
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 11
+        NODETYPE 201
+        NAME #BPS_Form_Cetak_RPA
+      ENDNODE
+      BEGINNODE
+        FILETYPE 0
+        UTILTYPE 11
+        NODETYPE 201
         NAME #BPS_Form_Revision_RPA
       ENDNODE
       BEGINNODE

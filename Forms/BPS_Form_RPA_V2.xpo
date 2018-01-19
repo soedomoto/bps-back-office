@@ -1,0 +1,2285 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: FRM
+
+; 
+; --------------------------------------------------------------------------------
+FRMVERSION 12
+
+FORM #BPS_Form_RPA_V2
+  PROPERTIES
+    Name                #BPS_Form_RPA_V2
+    Origin              #{9DD6FF9B-91B1-4B46-AA9A-618EC33BAFE8}
+  ENDPROPERTIES
+  
+  METHODS
+    SOURCE #classDeclaration
+      #public class FormRun extends ObjectRun
+      #{
+      #    UserId          user_id;
+      #    HakAkses        user_role;
+      #
+      #    BPSUserDetail   table_user;
+      #    BPSFlagOrg      table_flag_org;
+      #    BPSThAnggaran   table_tahun_anggaran;
+      #    BPSKmsOrg       table_kms;
+      #    BPSProgram      table_program;
+      #    BPSKegiatan     table_kegiatan;
+      #    BPSOutput       table_output;
+      #    BPSKomponen     table_komponen;
+      #    BPSAkun         table_akun;
+      #
+      #    int             tahun;
+      #    int             bulan, b;
+      #    FlagOrg         flag_org;
+      #    KdOrg           kd_org;
+      #    KdProgramDJA    kd_program;
+      #    KdKegiatan      kd_kegiatan;
+      #    kdoutput        kd_output;
+      #    KdKomponen      kd_komponen;
+      #    kdAkun          kd_akun;
+      #    //KdSubOutput   KdSubOutput;
+      #    //KdSubKomponen KdSubKomponen;
+      #
+      #    int             red_color;
+      #}
+    ENDSOURCE
+    SOURCE #create_blank_rpa_monthly
+      #public void create_blank_rpa_monthly(int _tahun, int _bulan)
+      #{
+      #    BPS_Table_RPA       rpa, rpa_month_before;
+      #    BPSEntriPembiayaanPusat pok;
+      #
+      #    delete_from rpa;
+      #
+      #    while select pok where pok.Tahun == _tahun {
+      #        select rpa_month_before where
+      #        rpa_month_before.item_detail == pok.DetailItem &&
+      #        rpa_month_before.kd_akun == pok.kdAkun &&
+      #        rpa_month_before.kd_kegiatan == pok.KdKegiatan &&
+      #        rpa_month_before.kd_komponen == pok.KdKomponen &&
+      #        rpa_month_before.kd_organisasi == pok.KdOrg &&
+      #        rpa_month_before.kd_output == pok.KdOutput &&
+      #        rpa_month_before.kd_program == pok.KdProgramDJA &&
+      #        rpa_month_before.no_item == pok.NOUrutItem &&
+      #        rpa_month_before.tahun == _tahun &&
+      #        rpa_month_before.bulan == _bulan - 1;
+      #
+      #        rpa.clear();
+      #        rpa.item_detail = pok.DetailItem;
+      #        rpa.kd_akun = pok.kdAkun;
+      #        rpa.kd_kegiatan = pok.KdKegiatan;
+      #        rpa.kd_komponen = pok.KdKomponen;
+      #        rpa.kd_organisasi = pok.KdOrg;
+      #        rpa.kd_output = pok.KdOutput;
+      #        rpa.kd_program = pok.KdProgramDJA;
+      #        rpa.no_item = pok.NOUrutItem;
+      #        rpa.tahun = _tahun;
+      #        rpa.bulan = _bulan;
+      #        rpa.pagu_awal = pok.PaguAwal;
+      #        rpa.pagu_booked = pok.PaguBooked;
+      #        rpa.pagu_realisasi = pok.PaguRealisasi;
+      #        rpa.pagu_revisi = pok.PaguRevisi;
+      #        rpa.pagu_sisa = pok.PaguSisa;
+      #
+      #        if (rpa_month_before) {
+      #            rpa.rpa_bln_1 = rpa_month_before.rpa_bln_1;
+      #            rpa.rpa_bln_2 = rpa_month_before.rpa_bln_2;
+      #            rpa.rpa_bln_3 = rpa_month_before.rpa_bln_3;
+      #            rpa.rpa_bln_4 = rpa_month_before.rpa_bln_4;
+      #            rpa.rpa_bln_5 = rpa_month_before.rpa_bln_5;
+      #            rpa.rpa_bln_6 = rpa_month_before.rpa_bln_6;
+      #            rpa.rpa_bln_7 = rpa_month_before.rpa_bln_7;
+      #            rpa.rpa_bln_8 = rpa_month_before.rpa_bln_8;
+      #            rpa.rpa_bln_9 = rpa_month_before.rpa_bln_9;
+      #            rpa.rpa_bln_10 = rpa_month_before.rpa_bln_10;
+      #            rpa.rpa_bln_11 = rpa_month_before.rpa_bln_11;
+      #            rpa.rpa_bln_12 = rpa_month_before.rpa_bln_12;
+      #        }
+      #
+      #        rpa.insert();
+      #    }
+      #}
+    ENDSOURCE
+    SOURCE #init
+      #public void init()
+      #{
+      #    super();
+      #
+      #    bulan = 1;
+      #    red_color = WinApi::RGB2int(255,0,0);
+      #
+      #    // Default user
+      #    user_id = curUserId();
+      #    select table_user where table_user.UserId == user_id;
+      #    user_role = table_user.HakAkses;
+      #
+      #    access_right_info.text("Anda terdaftar sebagai " + table_user.UserId +
+      #        " dengan hak akses " + enum2Value(table_user.HakAkses));
+      #
+      #    // Disable approval button
+      #    if (user_role != HakAkses::Eselon2) {
+      #        BG_Es_2.visible(false);
+      #    }
+      #
+      #    if (user_role != HakAkses::PPK) {
+      #        BG_PPK.visible(false);
+      #    }
+      #
+      #    if (user_role != HakAkses::Pengentri) {
+      #        BG_Es_Operator.visible(false);
+      #        BG_Form_Report.visible(false);
+      #    }
+      #
+      #    // Dont load on init
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,RecId)).value("0");
+      #    BPS_Table_RPA_ds.executeQuery();
+      #    BPS_Table_RPA_ds.refresh();
+      #
+      #    // Hide previous month
+      #    for (b=1; b<bulan; b++) {
+      #    element.form().design()
+      #        .control("txt_rpa_bln_" + int2str(b))
+      #        .visible(false);
+      #    }
+      #}
+    ENDSOURCE
+    SOURCE #record_modified
+      #public void record_modified()
+      #{
+      #    BPS_Table_RPA.tgl_entri = today();
+      #    BPS_Table_RPA.peg_entri = table_user.NIPBPS;
+      #    BPS_Table_RPA.update();
+      #}
+    ENDSOURCE
+    SOURCE #refresh
+      #public void refresh()
+      #{
+      #    /*
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, EntriPembiayaanPusatRecId)).value(int642str(BPSEntriPembiayaanPusat.RecId));
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, tahun)).value(int2str(BPSEntriPembiayaanPusat.Tahun));
+      #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA, RevisedByRecId)).value("0");
+      #    BPS_Table_RPA_ds.executeQuery();
+      #    BPS_Table_RPA_ds.refresh();
+      #    */
+      #}
+    ENDSOURCE
+  ENDMETHODS
+  OBJECTBANK
+    PROPERTIES
+    ENDPROPERTIES
+    
+    DATASOURCE
+      OBJECTPOOL
+        PROPERTIES
+          Name                #BPS_Table_RPA
+          Table               #BPS_Table_RPA
+        ENDPROPERTIES
+        
+        FIELDLIST
+        ENDFIELDLIST
+      ENDOBJECTPOOL
+      METHODS
+        SOURCE #active
+          #public int active()
+          #{
+          #    if (BPS_Table_RPA.is_approved_by_es_2() ||
+          #    BPS_Table_RPA.is_approved_by_ppk()) {
+          #        txt_rpa_bln_1.allowEdit(false);
+          #        txt_rpa_bln_2.allowEdit(false);
+          #        txt_rpa_bln_3.allowEdit(false);
+          #        txt_rpa_bln_4.allowEdit(false);
+          #        txt_rpa_bln_5.allowEdit(false);
+          #        txt_rpa_bln_6.allowEdit(false);
+          #        txt_rpa_bln_7.allowEdit(false);
+          #        txt_rpa_bln_8.allowEdit(false);
+          #        txt_rpa_bln_9.allowEdit(false);
+          #        txt_rpa_bln_10.allowEdit(false);
+          #        txt_rpa_bln_11.allowEdit(false);
+          #        txt_rpa_bln_12.allowEdit(false);
+          #    } else {
+          #        txt_rpa_bln_1.allowEdit(true);
+          #        txt_rpa_bln_2.allowEdit(true);
+          #        txt_rpa_bln_3.allowEdit(true);
+          #        txt_rpa_bln_4.allowEdit(true);
+          #        txt_rpa_bln_5.allowEdit(true);
+          #        txt_rpa_bln_6.allowEdit(true);
+          #        txt_rpa_bln_7.allowEdit(true);
+          #        txt_rpa_bln_8.allowEdit(true);
+          #        txt_rpa_bln_9.allowEdit(true);
+          #        txt_rpa_bln_10.allowEdit(true);
+          #        txt_rpa_bln_11.allowEdit(true);
+          #        txt_rpa_bln_12.allowEdit(true);
+          #    }
+          #
+          #    return super();
+          #}
+        ENDSOURCE
+        SOURCE #displayOption
+          #public void displayOption(Common _record, FormRowDisplayOption _options)
+          #{
+          #    BPS_Table_RPA rpa_rec = _record;
+          #
+          #    if (rpa_rec.tgl_entri) {
+          #        if (rpa_rec.is_exceeded()) {
+          #            _options.backColor(16711935);
+          #        } else if (! rpa_rec.is_optimal()) {
+          #            _options.backColor(65535);
+          #        } else {
+          #            _options.backColor(65280);
+          #        }
+          #    }
+          #
+          #    super(_record, _options);
+          #}
+        ENDSOURCE
+      ENDMETHODS
+    ENDDATASOURCE
+  ENDOBJECTBANK
+  
+  REFERENCEDATASOURCES
+  ENDREFERENCEDATASOURCES
+  
+  JOINS
+  ENDJOINS
+  
+  PARTREFERENCES
+  ENDPARTREFERENCES
+  
+  DESIGN
+    PROPERTIES
+      Width               #Column width
+      Height              #Column height
+      Caption             #Rencana Penggunaan Anggaran
+    ENDPROPERTIES
+    
+    CONTAINER
+      CONTROL ACTIONPANE
+        PROPERTIES
+          Name                #ActionPane
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupPOKTable
+          Style               #Strip
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL ACTIONPANETAB
+        PROPERTIES
+          Name                #ActionPaneTab
+          Width               #Column width
+          ElementPosition     #1431655764
+          HierarchyParent     #ActionPane
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL BUTTONGROUP
+        PROPERTIES
+          Name                #BG_Es_2
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741823
+          HierarchyParent     #ActionPaneTab
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL BUTTONGROUP
+        PROPERTIES
+          Name                #BG_Es_Operator
+          AutoDeclaration     #Yes
+          ElementPosition     #715827882
+          HierarchyParent     #ActionPaneTab
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL BUTTONGROUP
+        PROPERTIES
+          Name                #BG_Form_Report
+          AutoDeclaration     #Yes
+          Left                #Auto (left)
+          ElementPosition     #1789569705
+          HierarchyParent     #ActionPaneTab
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL BUTTONGROUP
+        PROPERTIES
+          Name                #BG_PPK
+          AutoDeclaration     #Yes
+          ElementPosition     #1431655764
+          HierarchyParent     #ActionPaneTab
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GRID
+        PROPERTIES
+          Name                #GridPOK
+          AutoDeclaration     #Yes
+          Width               #Column width
+          Height              #Column height
+          ElementPosition     #1610612734
+          HierarchyParent     #GroupPOKTable
+          MultiSelect         #No
+          DataSource          #BPS_Table_RPA
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilter
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupTop
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterAkun
+          ElementPosition     #1840700268
+          HierarchyParent     #GroupPOKFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterKegiatan
+          ElementPosition     #920350134
+          HierarchyParent     #GroupPOKFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterKomponen
+          ElementPosition     #1533916890
+          HierarchyParent     #GroupPOKFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterOrg
+          Width               #Column width
+          Height              #Column height
+          ElementPosition     #1431655764
+          HierarchyParent     #GroupFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterOutput
+          ElementPosition     #1227133512
+          HierarchyParent     #GroupPOKFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterProgram
+          ElementPosition     #613566756
+          HierarchyParent     #GroupPOKFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupFilterTA
+          ElementPosition     #1073741823
+          HierarchyParent     #GroupFilter
+          Columns             #2
+          ArrangeGuide        
+            ARRAY INDEX Columns 
+              #0
+              #0
+            ENDARRAY
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupPOK
+          Width               #Column width
+          Height              #Column height
+          ElementPosition     #1431655764
+          Caption             #Daftar RPA
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupPOKFilter
+          ElementPosition     #1789569705
+          HierarchyParent     #GroupFilter
+          Caption             #Daftar POK
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupPOKTable
+          Width               #Column width
+          Height              #Column height
+          ElementPosition     #1431655764
+          HierarchyParent     #GroupPOK
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupSnap
+          Left                #Auto (right)
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupTop
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupTop
+          ElementPosition     #715827882
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL GROUP
+        PROPERTIES
+          Name                #GroupUser
+          ElementPosition     #715827882
+          HierarchyParent     #GroupFilter
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_approve_es_2
+          AutoDeclaration     #Yes
+          Left                #Auto (right)
+          ElementPosition     #1073741822
+          HierarchyParent     #BG_Es_2
+          Text                #Setujui
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    super();
+            #
+            #    BPS_Table_RPA.tgl_es2_setuju = today();
+            #    BPS_Table_RPA.update();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_approve_ppk
+          AutoDeclaration     #Yes
+          Left                #Auto (right)
+          ElementPosition     #1073741822
+          HierarchyParent     #BG_PPK
+          Text                #Setujui
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    super();
+            #
+            #    BPS_Table_RPA.tgl_ppk_setuju = today();
+            #    BPS_Table_RPA.update();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_decline_es_2
+          ElementPosition     #1610612733
+          HierarchyParent     #BG_Es_2
+          Text                #Tolak
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_decline_ppk
+          ElementPosition     #1610612733
+          HierarchyParent     #BG_PPK
+          Text                #Tolak
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_form_tw_1
+          AutoDeclaration     #Yes
+          ElementPosition     #715827882
+          HierarchyParent     #BG_Form_Report
+          Text                #Cetak Form Tw I
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    /**
+            #    Args                        args;
+            #    BPS_RPA_Report_RC           rc;
+            #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+            #
+            #    super();
+            #
+            #    tmp_tbl_param.pok_ref_id = BPSEntriPembiayaanPusat.RecId;
+            #    tmp_tbl_param.triwulan = 1;
+            #    tmp_tbl_param.write();
+            #
+            #    args = new Args();
+            #    args.record(tmp_tbl_param);
+            #
+            #    rc = new BPS_RPA_Report_RC();
+            #    rc.parmLoadFromSysLastValue(false);
+            #    rc.parmArgs(args);
+            #    rc.parmReportName(ssrsReportStr(BPS_Report_Form_RPA_Triwulanan, Default_Design));
+            #    rc.parmShowDialog(false);
+            #    rc.startOperation();
+            #    */
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_form_tw_2
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741823
+          HierarchyParent     #BG_Form_Report
+          Text                #Cetak Form Tw II
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #/**
+            #    Args                        args;
+            #    BPS_RPA_Report_RC           rc;
+            #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+            #
+            #    super();
+            #
+            #    tmp_tbl_param.pok_ref_id = BPSEntriPembiayaanPusat.RecId;
+            #    tmp_tbl_param.triwulan = 2;
+            #    tmp_tbl_param.write();
+            #
+            #    args = new Args();
+            #    args.record(tmp_tbl_param);
+            #
+            #    rc = new BPS_RPA_Report_RC();
+            #    rc.parmLoadFromSysLastValue(false);
+            #    rc.parmArgs(args);
+            #    rc.parmReportName(ssrsReportStr(BPS_Report_Form_RPA_Triwulanan, Default_Design));
+            #    rc.parmShowDialog(false);
+            #    rc.startOperation();
+            #*/
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_form_tw_3
+          AutoDeclaration     #Yes
+          ElementPosition     #1431655764
+          HierarchyParent     #BG_Form_Report
+          Text                #Cetak Form Tw III
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #/**
+            #    Args                        args;
+            #    BPS_RPA_Report_RC           rc;
+            #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+            #
+            #    super();
+            #
+            #    tmp_tbl_param.pok_ref_id = BPSEntriPembiayaanPusat.RecId;
+            #    tmp_tbl_param.triwulan = 3;
+            #    tmp_tbl_param.write();
+            #
+            #    args = new Args();
+            #    args.record(tmp_tbl_param);
+            #
+            #    rc = new BPS_RPA_Report_RC();
+            #    rc.parmLoadFromSysLastValue(false);
+            #    rc.parmArgs(args);
+            #    rc.parmReportName(ssrsReportStr(BPS_Report_Form_RPA_Triwulanan, Default_Design));
+            #    rc.parmShowDialog(false);
+            #    rc.startOperation();
+            #*/
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_form_tw_4
+          AutoDeclaration     #Yes
+          ElementPosition     #1789569705
+          HierarchyParent     #BG_Form_Report
+          Text                #Cetak Form Tw IV
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #/**
+            #    Args                        args;
+            #    BPS_RPA_Report_RC           rc;
+            #    BPS_Temp_Table_RPA_Param    tmp_tbl_param;
+            #
+            #    super();
+            #
+            #    tmp_tbl_param.pok_ref_id = BPSEntriPembiayaanPusat.RecId;
+            #    tmp_tbl_param.triwulan = 4;
+            #    tmp_tbl_param.write();
+            #
+            #    args = new Args();
+            #    args.record(tmp_tbl_param);
+            #
+            #    rc = new BPS_RPA_Report_RC();
+            #    rc.parmLoadFromSysLastValue(false);
+            #    rc.parmArgs(args);
+            #    rc.parmReportName(ssrsReportStr(BPS_Report_Form_RPA_Triwulanan, Default_Design));
+            #    rc.parmShowDialog(false);
+            #    rc.startOperation();
+            #*/
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_submit_to_es_2
+          AutoDeclaration     #Yes
+          Left                #Auto (right)
+          ElementPosition     #1610612733
+          HierarchyParent     #BG_Es_Operator
+          Text                #Submit
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    int i = 1, j = 1, k = 1;
+            #    Array blank_items = new Array(Types::String),
+            #        warning_items = new Array(Types::String),
+            #        error_items = new Array(Types::String);
+            #    Str60 id;
+            #    BPS_Table_RPA rpa;
+            #    KdOrg kd_org_parent;
+            #    BPSPegawai pej_es_2;
+            #
+            #    while select rpa where rpa.tahun == tahun &&
+            #    rpa.bulan == bulan && rpa.kd_organisasi == kd_org {
+            #        id = rpa.get_group_pok();
+            #        if (! rpa.tgl_entri) {
+            #            blank_items.value(k, id);
+            #            k++;
+            #        } else if (rpa.is_exceeded()) {
+            #            error_items.value(i, id);
+            #            i++;
+            #        } else if (! rpa.is_optimal()) {
+            #            warning_items.value(j, id);
+            #            j++;
+            #        }
+            #    }
+            #
+            #    if (blank_items.lastIndex() > 0 || error_items.lastIndex() > 0 ||
+            #    warning_items.lastIndex() > 0) {
+            #        Box::warning("Masih terdapat " + int2str(blank_items.lastIndex()) +
+            #        " isian belum terisi, " + int2str(error_items.lastIndex()) +
+            #        " error dan " + int2str(warning_items.lastIndex()) +
+            #        " warning pada RPA " + txt_kode_org.text() + ". " +
+            #        "Anda harus memperbaikinya terlebih dahulu sebelum " +
+            #        "men-submit isian RPA");
+            #    } else {
+            #        while select rpa where rpa.tahun == tahun &&
+            #        rpa.bulan == bulan && rpa.kd_organisasi == kd_org {
+            #            rpa.tgl_submit = today();
+            #            rpa.peg_submit = table_user.NIPBPS;
+            #            rpa.update();
+            #        }
+            #
+            #        Box::info("Isian RPA " + txt_kode_org.text() +
+            #        "  telah berhasil disubmit.");
+            #
+            #        // Should notify related Es2
+            #        select table_kms where table_kms.FlagOrg == flag_org && table_kms.KdOrg == kd_org;
+            #        while (table_kms.Eselon > 2) {
+            #            kd_org_parent = table_kms.KdOrgParent;
+            #            select table_kms where table_kms.FlagOrg == flag_org && table_kms.KdOrg == kd_org_parent;
+            #        }
+            #
+            #        select pej_es_2 where pej_es_2.jab_kdstjab == "4" &&
+            #        !(pej_es_2.stp_kdstpeg like "9*") &&
+            #        pej_es_2.KdOrg == table_kms.KdOrg;
+            #
+            #        // Send email to Pejabat ES2
+            #        Box::info("Pejabat ES2 " + pej_es_2.Nama);
+            #    }
+            #
+            #    super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL COMMANDBUTTON
+        PROPERTIES
+          Name                #btn_rpa_validate
+          AutoDeclaration     #Yes
+          Left                #Auto (right)
+          ElementPosition     #1073741822
+          HierarchyParent     #BG_Es_Operator
+          Text                #Validasi
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #clicked
+            #void clicked()
+            #{
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    if(subStr(kd_org, 3, 3)=="000") {
+            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(subStr(kd_org, 1, 2) + "*");
+            #    } else {
+            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    }
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_akun)).value(kd_akun);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    Box::info("Validasi selesai. Lihat catatan pada kolom paling kanan tabel RPA.");
+            #
+            #    super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL INT64EDIT
+        PROPERTIES
+          Name                #Int64Edit
+          Visible             #No
+          AllowEdit           #No
+          ElementPosition     #1975684935
+          HierarchyParent     #GridPOK
+          DataSource          #BPS_Table_RPA
+          DataField           #RecId
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL INTEDIT
+        PROPERTIES
+          Name                #BPSEntriPembiayaanPusat_volume
+          Visible             #No
+          ElementPosition     #601295415
+          HierarchyParent     #GridPOK
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL INTEDIT
+        PROPERTIES
+          Name                #txt_pok_no_item
+          Visible             #No
+          AllowEdit           #No
+          ElementPosition     #171798690
+          HierarchyParent     #GridPOK
+          Label               #Item
+          DataSource          #BPS_Table_RPA
+          DataField           #no_item
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #BPSEntriPembiayaanPusat_hargaSatuan
+          Visible             #No
+          ElementPosition     #515396070
+          HierarchyParent     #GridPOK
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_pagu_realisasi
+          AllowEdit           #No
+          ElementPosition     #429496725
+          HierarchyParent     #GridPOK
+          Label               #Pagu Realisasi
+          DataSource          #BPS_Table_RPA
+          DataField           #pagu_realisasi
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_pagu_sisa
+          AllowEdit           #No
+          ElementPosition     #773094105
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Pagu Sisa
+          DataSource          #BPS_Table_RPA
+          DataField           #pagu_sisa
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_1
+          AutoDeclaration     #Yes
+          ElementPosition     #858993450
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Jan
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_1
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 1;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_10
+          AutoDeclaration     #Yes
+          ElementPosition     #1632087555
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Okt
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_10
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 10;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_11
+          AutoDeclaration     #Yes
+          ElementPosition     #1717986900
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Nov
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_11
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 11;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_12
+          AutoDeclaration     #Yes
+          ElementPosition     #1803886245
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Des
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_12
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 12;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_2
+          AutoDeclaration     #Yes
+          ElementPosition     #944892795
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Feb
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_2
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 2;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_3
+          AutoDeclaration     #Yes
+          ElementPosition     #1030792140
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Mar
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_3
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 3;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_4
+          AutoDeclaration     #Yes
+          ElementPosition     #1116691485
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Apr
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_4
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 4;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_5
+          AutoDeclaration     #Yes
+          ElementPosition     #1202590830
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Mei
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_5
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 5;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_6
+          AutoDeclaration     #Yes
+          ElementPosition     #1288490175
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Jun
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_6
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 6;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_7
+          AutoDeclaration     #Yes
+          ElementPosition     #1374389520
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Jul
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_7
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 7;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_8
+          AutoDeclaration     #Yes
+          ElementPosition     #1460288865
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Ags
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_8
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 8;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_bln_9
+          AutoDeclaration     #Yes
+          ElementPosition     #1546188210
+          HierarchyParent     #GridPOK
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Sep
+          DataSource          #BPS_Table_RPA
+          DataField           #rpa_bln_9
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    BPS_Table_RPA_Log rpa_log;
+            #    rpa_log.clear();
+            #    rpa_log.kd_organisasi = BPS_Table_RPA.kd_organisasi;
+            #    rpa_log.kd_program = BPS_Table_RPA.kd_program;
+            #    rpa_log.kd_output = BPS_Table_RPA.kd_output;
+            #    rpa_log.kd_komponen = BPS_Table_RPA.kd_komponen;
+            #    rpa_log.kd_kegiatan = BPS_Table_RPA.kd_kegiatan;
+            #    rpa_log.kd_akun = BPS_Table_RPA.kd_akun;
+            #    rpa_log.no_item = BPS_Table_RPA.no_item;
+            #    rpa_log.tahun = BPS_Table_RPA.tahun;
+            #    rpa_log.bulan = 9;
+            #    rpa_log.peg_entri = table_user.NIPBPS;
+            #    rpa_log.tgl_entri = today();
+            #    rpa_log.rpa = str2num(this.valueStr());
+            #    rpa_log.insert();
+            #
+            #    element.record_modified();
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL REALEDIT
+        PROPERTIES
+          Name                #txt_rpa_kumulatif_tahun
+          AutoDeclaration     #Yes
+          AllowEdit           #No
+          ElementPosition     #1889785590
+          HierarchyParent     #GridPOK
+          Alignment           #Right
+          ThousandSeparator   #Dot (.)
+          DecimalSeparator    #Comma (,)
+          Label               #Total RPA Kumulatif
+          DataSource          #BPS_Table_RPA
+          DataMethod          #get_kumulatif
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #access_right_info
+          AutoDeclaration     #Yes
+          ElementPosition     #1431655764
+          HierarchyParent     #GroupUser
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_kode_org
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterOrg
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_nama_akun
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterAkun
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_nama_kegiatan
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterKegiatan
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_nama_komponen
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterKomponen
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_nama_output
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterOutput
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_nama_program
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterProgram
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STATICTEXT
+        PROPERTIES
+          Name                #txt_tahun
+          AutoDeclaration     #Yes
+          Visible             #No
+          ElementPosition     #1610612733
+          HierarchyParent     #GroupFilterTA
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #BPSEntriPembiayaanPusat_KdSatuan
+          Visible             #No
+          ElementPosition     #687194760
+          HierarchyParent     #GridPOK
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_akun
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterAkun
+          Label               #Akun
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds, qb_ds_k;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSAkun));
+            #
+            #    qb_ds_k = qb_ds.addDataSource(tableNum(BPSEntriPembiayaanPusat));
+            #    qb_ds_k.relations(false);
+            #    qb_ds_k.joinMode(joinmode::InnerJoin);
+            #    qb_ds_k.addLink(fieldnum(BPSAkun, kdAkun), fieldnum(BPSEntriPembiayaanPusat, kdAkun));
+            #
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, Tahun)).value(int2str(tahun));
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, FlagOrg)).value(int2str(flag_org));
+            #
+            #    if (subStr(kd_org, 3, 3) == "000") {
+            #        qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, KdOrg)).value(subStr(kd_org, 1, 2) + "*");
+            #    } else {
+            #        qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, KdOrg)).value(kd_org);
+            #    }
+            #
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, KdProgramDJA)).value(kd_program);
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, KdKegiatan)).value(kd_kegiatan);
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, kdoutput)).value(kd_output);
+            #    qb_ds_k.addRange(fieldNum(BPSEntriPembiayaanPusat, KdKomponen)).value(kd_komponen);
+            #
+            #    qb_ds.addSortField(fieldnum(BPSAkun, kdAkun));
+            #    qb_ds.addSortField(fieldnum(BPSAkun, NmAkun));
+            #    qb_ds.addOrderByField(fieldnum(BPSAkun, kdAkun));
+            #    qb_ds.orderMode(OrderMode::GroupBy);
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSAkun), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSAkun, kdAkun));
+            #    lookup.addLookupfield(fieldNum(BPSAkun, NmAkun));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    kd_akun = this.valueStr();
+            #
+            #    select table_akun where table_akun.kdAkun == kd_akun;
+            #    txt_nama_akun.visible(true);
+            #    txt_nama_akun.text(table_akun.NmAkun);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    if(subStr(kd_org, 3, 3)=="000") {
+            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(subStr(kd_org, 1, 2) + "*");
+            #    } else {
+            #        BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    }
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,flagterpakai)).value(enum2str(YaTidak::Ya));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_akun)).value(kd_akun);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_kegiatan
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterKegiatan
+          Label               #Kegiatan
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds, qb_ds_k;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSKegiatan));
+            #
+            #    qb_ds_k = qb_ds.addDataSource(tableNum(BPSKomponen));
+            #    qb_ds_k.relations(false);
+            #    qb_ds_k.joinMode(joinmode::InnerJoin);
+            #    qb_ds_k.addLink(fieldnum(BPSKegiatan, Tahun), fieldnum(BPSKomponen, Tahun));
+            #    qb_ds_k.addLink(fieldnum(BPSKegiatan, KdProgramDJA), fieldnum(BPSKomponen, KdProgramDJA));
+            #    qb_ds_k.addLink(fieldnum(BPSKegiatan, KdKegiatan), fieldnum(BPSKomponen, KdKegiatan));
+            #
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, Tahun)).value(int2str(tahun));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, FlagOrg)).value(int2str(flag_org));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdOrg)).value(kd_org);
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdProgramDJA)).value(kd_program);
+            #
+            #    qb_ds.addSortField(fieldnum(BPSKegiatan, KdKegiatan));
+            #    qb_ds.addSortField(fieldnum(BPSKegiatan, NmKegiatan));
+            #    qb_ds.addOrderByField(fieldnum(BPSKegiatan, KdKegiatan));
+            #    qb_ds.orderMode(OrderMode::GroupBy);
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSKegiatan), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSKegiatan, KdKegiatan));
+            #    lookup.addLookupfield(fieldNum(BPSKegiatan, NmKegiatan));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Set field after it empty
+            #    field_kode_output.text("");
+            #    field_kode_komponen.text("");
+            #    field_kode_akun.text("");
+            #
+            #    txt_nama_output.text("");
+            #    txt_nama_komponen.text("");
+            #    txt_nama_akun.text("");
+            #
+            #    kd_kegiatan = this.valueStr();
+            #
+            #    select table_kegiatan where table_kegiatan.Tahun == tahun && table_kegiatan.KdProgramDJA == kd_program && table_kegiatan.KdKegiatan == kd_kegiatan;
+            #    txt_nama_kegiatan.text(table_kegiatan.NmKegiatan);
+            #    txt_nama_kegiatan.visible(true);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_komponen
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterKomponen
+          Label               #Komponen
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSKomponen));
+            #    qb_ds.addRange(fieldNum(BPSKomponen, Tahun)).value(int2str(tahun));
+            #    qb_ds.addRange(fieldNum(BPSKomponen, FlagOrg)).value(int2str(flag_org));
+            #    qb_ds.addRange(fieldNum(BPSKomponen, KdOrg)).value(kd_org);
+            #    qb_ds.addRange(fieldNum(BPSKomponen, KdProgramDJA)).value(kd_program);
+            #    qb_ds.addRange(fieldNum(BPSKomponen, KdKegiatan)).value(kd_kegiatan);
+            #    qb_ds.addRange(fieldNum(BPSKomponen, kdoutput)).value(kd_output);
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSKomponen), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSKomponen, KdKomponen));
+            #    lookup.addLookupfield(fieldNum(BPSKomponen, NmKomponen));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Set field after it empty
+            #    field_kode_akun.text("");
+            #    txt_nama_akun.text("");
+            #
+            #    kd_komponen = this.valueStr();
+            #
+            #    select table_komponen where table_komponen.Tahun == tahun && table_komponen.FlagOrg == flag_org &&
+            #    table_komponen.KdOrg == kd_org && table_komponen.KdKomponen == kd_komponen;
+            #    txt_nama_komponen.text(table_komponen.NmKomponen);
+            #    txt_nama_komponen.visible(true);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_komponen)).value(kd_komponen);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_org
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterOrg
+          Label               #Organisasi
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    super();
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSKmsOrg));
+            #
+            #    qb_ds.addRange(fieldNum(BPSKmsOrg, FlagOrg)).value(int2str(flag_org));
+            #    qb_ds.addRange(fieldNum(BPSKmsOrg, Eselon)).value(int2str(3));
+            #    qb_ds.addRange(fieldNum(BPSKmsOrg, Eselon)).value(int2str(2));
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSKmsOrg), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSKmsOrg, KdOrg));
+            #    lookup.addLookupfield(fieldNum(BPSKmsOrg, NamaOrg));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Set field after it empty
+            #    field_kode_program.text("");
+            #    field_kode_kegiatan.text("");
+            #    field_kode_output.text("");
+            #    field_kode_komponen.text("");
+            #    field_kode_akun.text("");
+            #
+            #    txt_nama_program.text("");
+            #    txt_nama_kegiatan.text("");
+            #    txt_nama_output.text("");
+            #    txt_nama_komponen.text("");
+            #    txt_nama_akun.text("");
+            #
+            #    // Get organization code from selected item
+            #    kd_org = this.valueStr();
+            #
+            #    // Perform query
+            #    select table_kms where table_kms.FlagOrg == flag_org && table_kms.KdOrg == kd_org;
+            #    txt_kode_org.text(table_kms.NamaOrg);
+            #    txt_kode_org.visible(true);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_output
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterOutput
+          Label               #Output
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds, qb_ds_k;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSOutput));
+            #
+            #    qb_ds_k = qb_ds.addDataSource(tableNum(BPSKomponen));
+            #    qb_ds_k.relations(false);
+            #    qb_ds_k.joinMode(joinmode::InnerJoin);
+            #    qb_ds_k.addLink(fieldnum(BPSOutput, Tahun), fieldnum(BPSKomponen, Tahun));
+            #    qb_ds_k.addLink(fieldnum(BPSOutput, KdProgramDJA), fieldnum(BPSKomponen, KdProgramDJA));
+            #    qb_ds_k.addLink(fieldnum(BPSOutput, KdKegiatan), fieldnum(BPSKomponen, KdKegiatan));
+            #    qb_ds_k.addLink(fieldnum(BPSOutput, kdoutput), fieldnum(BPSKomponen, kdoutput));
+            #
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, Tahun)).value(int2str(tahun));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, FlagOrg)).value(int2str(flag_org));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdOrg)).value(kd_org);
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdProgramDJA)).value(kd_program);
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdKegiatan)).value(kd_kegiatan);
+            #
+            #    qb_ds.addSortField(fieldNum(BPSOutput, kdoutput));
+            #    qb_ds.addSortField(fieldNum(BPSOutput, nmoutput));
+            #    qb_ds.addOrderByField(fieldnum(BPSOutput, kdoutput));
+            #    qb_ds.orderMode(OrderMode::GroupBy);
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSOutput), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSOutput, kdoutput));
+            #    lookup.addLookupfield(fieldNum(BPSOutput, nmoutput));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Set field after it empty
+            #    field_kode_komponen.text("");
+            #    field_kode_akun.text("");
+            #
+            #    txt_nama_komponen.text("");
+            #    txt_nama_akun.text("");
+            #
+            #    kd_output = this.valueStr();
+            #
+            #    select table_output where table_output.Tahun == tahun && table_output.KdProgramDJA == kd_program && table_output.KdKegiatan == kd_kegiatan && table_output.KdOutput == kd_output;
+            #    txt_nama_output.text(table_output.NmOutput);
+            #    txt_nama_output.visible(true);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_kegiatan)).value(kd_kegiatan);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_output)).value(kd_output);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_kode_program
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterProgram
+          Label               #Program
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    QueryBuildDataSource    qb_ds, qb_ds_k;
+            #    SysTableLookup          lookup;
+            #    Query                   query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    qb_ds = query.addDataSource(tableNum(BPSProgram));
+            #
+            #    qb_ds_k = qb_ds.addDataSource(tableNum(BPSKomponen));
+            #    qb_ds_k.relations(false);
+            #    qb_ds_k.joinMode(joinmode::InnerJoin);
+            #    qb_ds_k.addLink(fieldnum(BPSProgram,Tahun),fieldnum(BPSKomponen,Tahun));
+            #    qb_ds_k.addLink(fieldnum(BPSProgram,KdProgramDJA),fieldnum(BPSKomponen,KdProgramDJA));
+            #
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, Tahun)).value(int2str(tahun));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, FlagOrg)).value(int2str(flag_org));
+            #    qb_ds_k.addRange(fieldNum(BPSKomponen, KdOrg)).value(kd_org);
+            #
+            #    qb_ds.addSortField(fieldnum(BPSProgram, KdProgramDJA));
+            #    qb_ds.addSortField(fieldnum(BPSProgram, NmProgram));
+            #    qb_ds.addOrderByField(fieldnum(BPSProgram, KdProgramDJA));
+            #    qb_ds.orderMode(OrderMode::GroupBy);
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSProgram), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSProgram, KdProgramDJA));
+            #    lookup.addLookupfield(fieldNum(BPSProgram, NmProgram));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Set field after it empty
+            #    field_kode_kegiatan.text("");
+            #    field_kode_output.text("");
+            #    field_kode_komponen.text("");
+            #    field_kode_akun.text("");
+            #
+            #    txt_nama_kegiatan.text("");
+            #    txt_nama_output.text("");
+            #    txt_nama_komponen.text("");
+            #    txt_nama_akun.text("");
+            #
+            #    kd_program = this.valueStr();
+            #
+            #    select table_program where table_program.Tahun == tahun && table_program.KdProgramDJA == kd_program;
+            #    txt_nama_program.text(table_program.NmProgram);
+            #    txt_nama_program.visible(true);
+            #
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).clearRanges();
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,tahun)).value(int2str(tahun));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,bulan)).value(int2str(bulan));
+            #    // BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,FlagOrg)).value(int2str(flag_org));
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_organisasi)).value(kd_org);
+            #    BPS_Table_RPA_ds.query().dataSourceNo(1).addRange(fieldNum(BPS_Table_RPA,kd_program)).value(kd_program);
+            #    BPS_Table_RPA_ds.executeQuery();
+            #    BPS_Table_RPA_ds.refresh();
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #field_tahun
+          AutoDeclaration     #Yes
+          ElementPosition     #1073741822
+          HierarchyParent     #GroupFilterTA
+          Label               #Tahun Anggaran
+        ENDPROPERTIES
+        
+        METHODS
+          SOURCE #lookup
+            #public void lookup()
+            #{
+            #    SysTableLookup  lookup;
+            #    Query           query;
+            #
+            #    // Define query object and set it's data source
+            #    query = new Query();
+            #    query.addDataSource(tableNum(BPSThAnggaran));
+            #
+            #    // Define lookup object to perform lookup operation
+            #    lookup = SysTableLookup::newParameters(tableNum(BPSThAnggaran), this, true);
+            #    lookup.parmQuery(query);
+            #
+            #    // Add the fields to be shown in the lookup form.
+            #    lookup.addLookupfield(fieldNum(BPSThAnggaran, Tahun));
+            #    lookup.addLookupfield(fieldNum(BPSThAnggaran, Deskripsi));
+            #
+            #    // Perform the lookup.
+            #    lookup.performFormLookup();
+            #}
+          ENDSOURCE
+          SOURCE #modified
+            #public boolean modified()
+            #{
+            #    // Get year from selected item
+            #    tahun = str2int(this.valueStr());
+            #
+            #    // Code below will be used oftenly, so it should be replaced by function.
+            #    // But how to do that?
+            #    flag_org = 1;
+            #    while select table_flag_org order by table_flag_org.FlagOrg desc {
+            #        if(year(table_flag_org.tanggalSKOrg) <= tahun) {
+            #            flag_org = table_flag_org.FlagOrg;
+            #            break;
+            #        }
+            #    }
+            #
+            #    select table_tahun_anggaran where table_tahun_anggaran.Tahun == tahun;
+            #    txt_tahun.text(table_tahun_anggaran.Deskripsi);
+            #    txt_tahun.visible(true);
+            #
+            #    // flag_org = get_flag_org_by_year(tahun);
+            #
+            #    return super();
+            #}
+          ENDSOURCE
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #txt_notes
+          AllowEdit           #No
+          ElementPosition     #2061584280
+          HierarchyParent     #GridPOK
+          Label               #Catatan
+          DataSource          #BPS_Table_RPA
+          DataMethod          #get_notes
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #txt_pok_item_detail
+          AllowEdit           #No
+          ElementPosition     #343597380
+          HierarchyParent     #GridPOK
+          Label               #Deskripsi Item
+          DataSource          #BPS_Table_RPA
+          DataField           #item_detail
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+      CONTROL STRINGEDIT
+        PROPERTIES
+          Name                #txt_pok_no_item_long
+          AllowEdit           #No
+          ElementPosition     #257698035
+          HierarchyParent     #GridPOK
+          Label               #Item
+          DataSource          #BPS_Table_RPA
+          DataMethod          #get_group_pok
+        ENDPROPERTIES
+        
+        METHODS
+        ENDMETHODS
+      ENDCONTROL 
+      
+    ENDCONTAINER
+    
+  ENDDESIGN
+  
+  PERMISSIONS #Permissions
+    PROPERTIES
+    ENDPROPERTIES
+    
+    PERMISSIONSET #Read
+      PROPERTIES
+      ENDPROPERTIES
+      
+      FORM #Controls
+      ENDFORM
+      
+    TABLES #Tables
+    ENDTABLES
+    
+  SERVERMETHODS #Server Methods
+  ENDSERVERMETHODS
+  
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Update
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Create
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+PERMISSIONSET #Delete
+  PROPERTIES
+  ENDPROPERTIES
+  
+  FORM #Controls
+  ENDFORM
+  
+TABLES #Tables
+ENDTABLES
+
+SERVERMETHODS #Server Methods
+ENDSERVERMETHODS
+
+ASSOCIATEDFORMS #Associated Forms
+ENDASSOCIATEDFORMS
+
+ENDPERMISSIONSET
+
+ENDPERMISSIONS
+
+ENDFORM
+
+
+***Element: END
